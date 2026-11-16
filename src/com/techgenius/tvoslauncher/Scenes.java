@@ -398,6 +398,25 @@ public final class Scenes {
         return dockPositionNames()[dockPositionIndex(c)];
     }
 
+    private static String greetingKey(Context c) {
+        return "home_greeting_" + (LOOK_CLASSIC.equals(getLook(c)) ? LOOK_CLASSIC : LOOK_SCENES);
+    }
+
+    public static String getHomeGreeting(Context c) {
+        if (c == null) return "";
+        String fallback = LOOK_CLASSIC.equals(getLook(c))
+                ? "Добро пожаловать домой"
+                : "Добро пожаловать в Wawid TV";
+        return prefs(c).getString(greetingKey(c), fallback);
+    }
+
+    public static void setHomeGreeting(Context c, String greeting) {
+        if (c == null) return;
+        String value = greeting == null ? "" : greeting.trim();
+        if (value.length() > 64) value = value.substring(0, 64);
+        prefs(c).edit().putString(greetingKey(c), value).apply();
+    }
+
     public static int getDockScalePercent(Context c) {
         if (c == null) return 100;
         int pct = prefs(c).getInt("dock_scale_pct", 100);
