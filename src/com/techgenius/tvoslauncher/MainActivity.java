@@ -763,7 +763,7 @@ public class MainActivity extends Activity {
         cwxLit.setColor(Color.WHITE);
         classicWeatherButton.setOnFocusChangeListener((v, has) -> {
             classicWeatherButton.setBackground(has ? cwxLit : cwxGlass);
-            classicWeatherButton.setImageBitmap(Glyphs.get("cloud", dp(19), has ? 0xFF111114 : Color.WHITE));
+            classicWeatherButton.setImageBitmap(Glyphs.get("cloud", dp(19), has ? 0xFF21182B : Color.WHITE));
             v.animate().scaleX(has ? 1.12f : 1f).scaleY(has ? 1.12f : 1f).setDuration(200).setInterpolator(LIFT).start();
             if (has) onClassicNonAppFocused();
         });
@@ -786,7 +786,7 @@ public class MainActivity extends Activity {
         rfLit.setColor(Color.WHITE);
         refreshButton.setOnFocusChangeListener((v, has) -> {
             refreshButton.setBackground(has ? rfLit : rfGlass);
-            refreshButton.setImageBitmap(Glyphs.get("refresh", dp(20), has ? 0xFF111114 : Color.WHITE));
+            refreshButton.setImageBitmap(Glyphs.get("refresh", dp(20), has ? 0xFF21182B : Color.WHITE));
             v.animate().scaleX(has ? 1.12f : 1f).scaleY(has ? 1.12f : 1f).setDuration(200).setInterpolator(LIFT).start();
             if (has) onClassicNonAppFocused();
         });
@@ -809,7 +809,7 @@ public class MainActivity extends Activity {
         seLit.setColor(Color.WHITE);
         searchButton.setOnFocusChangeListener((v, has) -> {
             searchButton.setBackground(has ? seLit : seGlass);
-            searchButton.setImageBitmap(Glyphs.get("search", dp(20), has ? 0xFF111114 : Color.WHITE));
+            searchButton.setImageBitmap(Glyphs.get("search", dp(20), has ? 0xFF21182B : Color.WHITE));
             v.animate().scaleX(has ? 1.12f : 1f).scaleY(has ? 1.12f : 1f).setDuration(200).setInterpolator(LIFT).start();
             if (has) onClassicNonAppFocused();
         });
@@ -831,7 +831,7 @@ public class MainActivity extends Activity {
         ccLit.setColor(Color.WHITE);
         ccButton.setOnFocusChangeListener((v, has) -> {
             ccButton.setBackground(has ? ccLit : ccGlass);
-            ccButton.setImageBitmap(Glyphs.get("controls", dp(20), has ? 0xFF111114 : Color.WHITE));
+            ccButton.setImageBitmap(Glyphs.get("controls", dp(20), has ? 0xFF21182B : Color.WHITE));
             v.animate().scaleX(has ? 1.12f : 1f).scaleY(has ? 1.12f : 1f).setDuration(200).setInterpolator(LIFT).start();
             if (has) onClassicNonAppFocused();
         });
@@ -4353,18 +4353,19 @@ public class MainActivity extends Activity {
         // Focused (tvOS): the tile turns solid white with a dark glyph and text.
         GradientDrawable white = new GradientDrawable();
         white.setCornerRadius(radius);
-        white.setColor(0xF7FFFFFF);
+        white.setColor(0xFFF0E9FF);
+        white.setStroke(Math.max(1, dp(1)), 0xFFB58AFF);
         int glyphColor = glyph.equals("wifi") ? 0xFF0A84FF : Color.WHITE;
         t.setOnFocusChangeListener((v, has) -> {
             t.setBackground(has ? white : glass);
             gi.setImageBitmap(Glyphs.get(glyph, gs, has ? (glyph.equals("wifi") ? 0xFF0A84FF : 0xFF111114) : glyphColor));
             TextView tt = titleRef[0];
             if (tt != null) {
-                tt.setTextColor(has ? 0xFF111114 : Color.WHITE);
+                tt.setTextColor(has ? 0xFF21182B : Color.WHITE);
                 tt.setShadowLayer(has ? 0 : dp(4), 0, has ? 0 : dp(1), 0x99000000);
             }
             if (subRef != null) {
-                subRef.setTextColor(has ? 0xB3111114 : Color.WHITE);
+                subRef.setTextColor(has ? 0xB321182B : Color.WHITE);
                 subRef.setShadowLayer(has ? 0 : dp(4), 0, has ? 0 : dp(1), 0x99000000);
             }
             if (memBarFill != null && memBarFill.getParent() != null && v == ((View) memBarFill.getParent()).getParent().getParent()) {
