@@ -1032,24 +1032,39 @@ public class SettingsActivity extends Activity {
                             .setNegativeButton("Отмена", null)
                             .show();
                 });
+        row("Положение приветствия",
+                () -> {
+                    String position = Scenes.getHomeGreetingPosition(this);
+                    return "center".equals(position) ? "По центру" : ("right".equals(position) ? "Справа" : "Слева");
+                },
+                () -> new AlertDialog.Builder(this)
+                        .setTitle("Положение приветствия")
+                        .setSingleChoiceItems(new String[]{"Слева", "По центру", "Справа"},
+                                "left".equals(Scenes.getHomeGreetingPosition(this)) ? 0
+                                        : ("center".equals(Scenes.getHomeGreetingPosition(this)) ? 1 : 2),
+                                (dialog, which) -> {
+                                    Scenes.setHomeGreetingPosition(this, which == 1 ? "center" : (which == 2 ? "right" : "left"));
+                                    dialog.dismiss();
+                                    refreshAll();
+                                })
+                        .setNegativeButton("Отмена", null)
+                        .show());
         row("Настройки виджетов",
                 () -> (HomeDashboard.isEnabled(this) ? "Включено" : "Выключено") + "  ›",
                 () -> openSubMenu("home_dashboard"));
 
         section("ПАНЕЛЬ ПРИЛОЖЕНИЙ");
-        if (scenesLook) {
-            row("Положение дока",
-                    () -> Scenes.dockPositionLabel(this),
-                    () -> new AlertDialog.Builder(this)
-                            .setTitle("Положение дока")
-                            .setSingleChoiceItems(Scenes.dockPositionNames(), Scenes.dockPositionIndex(this), (dialog, which) -> {
-                                Scenes.setDockPosition(this, Scenes.dockPositionValue(which));
-                                dialog.dismiss();
-                                refreshAll();
-                            })
-                            .setNegativeButton("Отмена", null)
-                            .show());
-        }
+        row("Положение дока",
+                () -> Scenes.dockPositionLabel(this),
+                () -> new AlertDialog.Builder(this)
+                        .setTitle("Положение дока")
+                        .setSingleChoiceItems(Scenes.dockPositionNames(), Scenes.dockPositionIndex(this), (dialog, which) -> {
+                            Scenes.setDockPosition(this, Scenes.dockPositionValue(which));
+                            dialog.dismiss();
+                            refreshAll();
+                        })
+                        .setNegativeButton("Отмена", null)
+                        .show());
         row("Размер панели",
                 () -> Scenes.dockScaleLabel(this),
                 () -> openSubMenu("dock_size"));
