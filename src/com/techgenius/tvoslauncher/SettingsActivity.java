@@ -2718,9 +2718,6 @@ public class SettingsActivity extends Activity {
         row("🌍  " + I18n.t(this, "releases_country_setting") + "…",
                 () -> HomeDashboard.getReleasesCountriesSummary(this),
                 () -> openSubMenu("releases_countries"));
-        row(tr("Prayer calculation method", "Namaz vakti hesaplama yöntemi"),
-                () -> HomeDashboard.getPrayerMethodName(this),
-                this::promptPrayerMethodDialog);
         row(tr("Add favorite football team…", "Favori futbol takımı ekle…"),
                 () -> "＋",
                 this::promptAddFavoriteTeamDialog);
@@ -2770,24 +2767,6 @@ public class SettingsActivity extends Activity {
         }
         infoNote(tr("By default, Most Watched automatically syncs with your selected UI language. Selecting any country above switches to custom multi-country mode.",
                 "Varsayılan olarak Çok İzlenenler widget'ı seçili arayüz diliyle otomatik eşitlenir. Yukarıdan ülke seçtiğinizde özel çoklu ülke moduna geçilir."));
-    }
-
-    private void promptPrayerMethodDialog() {
-        int cur = HomeDashboard.getPrayerMethod(this);
-        String[] opts = new String[HomeDashboard.PRAYER_METHOD_IDS.length];
-        for (int i = 0; i < opts.length; i++) {
-            opts[i] = (HomeDashboard.PRAYER_METHOD_IDS[i] == cur ? "✓ " : "   ")
-                    + HomeDashboard.PRAYER_METHOD_NAMES[i];
-        }
-        dialog(tr("Prayer Calculation Method", "Namaz Vakti Hesaplama Yöntemi"))
-                .setItems(opts, (d, which) -> {
-                    if (which >= 0 && which < HomeDashboard.PRAYER_METHOD_IDS.length) {
-                        HomeDashboard.setPrayerMethod(this, HomeDashboard.PRAYER_METHOD_IDS[which]);
-                        refreshAll();
-                    }
-                })
-                .setNegativeButton(tr("Cancel", "İptal"), null)
-                .show();
     }
 
     private void promptAddFavoriteTeamDialog() {
