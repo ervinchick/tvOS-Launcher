@@ -446,6 +446,7 @@ public class MainActivity extends Activity {
         if (returningFromSettings && !folderMode && launchOverlay == null && moveIndex < 0) reload(currentKey());
         returningFromSettings = false;
         updateStatusClockFormat();
+        if (sceneHome != null) sceneHome.refreshHomeGreeting();
         if (avatarView != null) {
             avatarView.setImageBitmap(Profiles.avatar(this, Profiles.current(this), avatarSize));
             avatarView.setVisibility(Profiles.list(this).size() > 1 ? View.VISIBLE : View.GONE);
