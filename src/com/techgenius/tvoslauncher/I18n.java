@@ -12,10 +12,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Multi-language localization support for Wawid TV:
- * English (en), Turkish (tr), Swedish (sv), Hindi/Indian (hi), Spanish (es), French (fr),
- * German (de), Italian (it), Russian (ru), Portuguese (pt), Arabic (ar),
- * Japanese (ja), Chinese (zh), Korean (ko) and Hebrew (he).
+ * Russian-only interface localization for Wawid TV.
+ * Legacy translation dictionaries remain temporarily for compatibility with existing UI code,
+ * but only Russian is exposed as a selectable language.
  */
 public final class I18n {
     public static final String LANG_EN = "en";
