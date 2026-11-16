@@ -1008,6 +1008,30 @@ public class SettingsActivity extends Activity {
                 });
 
         section("ВИДЖЕТЫ ГЛАВНОГО ЭКРАНА");
+        row("Приветствие",
+                () -> {
+                    String greeting = Scenes.getHomeGreeting(this);
+                    return greeting.isEmpty() ? "Выключено" : greeting;
+                },
+                () -> {
+                    final android.widget.EditText edit = new android.widget.EditText(this);
+                    edit.setSingleLine(true);
+                    edit.setText(Scenes.getHomeGreeting(this));
+                    edit.setHint("Текст приветствия");
+                    new AlertDialog.Builder(this)
+                            .setTitle("Приветствие главного экрана")
+                            .setView(edit)
+                            .setPositiveButton("Сохранить", (dialog, which) -> {
+                                Scenes.setHomeGreeting(this, edit.getText().toString());
+                                refreshAll();
+                            })
+                            .setNeutralButton("По умолчанию", (dialog, which) -> {
+                                Scenes.setHomeGreeting(this, null);
+                                refreshAll();
+                            })
+                            .setNegativeButton("Отмена", null)
+                            .show();
+                });
         row("Настройки виджетов",
                 () -> (HomeDashboard.isEnabled(this) ? "Включено" : "Выключено") + "  ›",
                 () -> openSubMenu("home_dashboard"));
