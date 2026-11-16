@@ -256,6 +256,18 @@ final class SceneHome {
         homeGreeting.setVisibility(value.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
+    void attachHomeGreetingToRoot() {
+        if (homeGreeting == null || host.root == null || homeGreeting.getParent() == host.root) return;
+        if (homeGreeting.getParent() instanceof ViewGroup) {
+            ((ViewGroup) homeGreeting.getParent()).removeView(homeGreeting);
+        }
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                dp(420), dp(28), Gravity.TOP | Gravity.START);
+        lp.leftMargin = dp(40);
+        lp.topMargin = dp(78);
+        host.root.addView(homeGreeting, lp);
+    }
+
     private void buildSearchAiBar() {
         searchAiRow = new LinearLayout(host);
         searchAiRow.setOrientation(LinearLayout.HORIZONTAL);
