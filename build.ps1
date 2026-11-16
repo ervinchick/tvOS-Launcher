@@ -33,7 +33,7 @@ if ($LASTEXITCODE -ne 0) { throw "aapt2 compile failed" }
 
 & "$BT\aapt2.exe" link -o build\unsigned.apk -I "$JAR" --manifest AndroidManifest.xml `
     --java build\gen --min-sdk-version 24 --target-sdk-version 34 `
-    --version-code 16 --version-name "2.2.0" build\res.zip
+    --version-code 17 --version-name "1.0.0" build\res.zip
 if ($LASTEXITCODE -ne 0) { throw "aapt2 link failed" }
 
 $javaFiles = Get-ChildItem -Recurse -Path src, build\gen -Filter "*.java" | Select-Object -ExpandProperty FullName
@@ -79,7 +79,7 @@ if ($LASTEXITCODE -ne 0) { throw "zipalign failed" }
 $KS = "debug.keystore"
 if (-not (Test-Path $KS)) {
     & keytool -genkeypair -keystore $KS -storepass android -keypass android -alias debug `
-        -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=tvOS Launcher debug" | Out-Null
+        -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Wawid TV debug" | Out-Null
 }
 
 & "$BT\apksigner.bat" sign --ks $KS --ks-pass pass:android --key-pass pass:android `
