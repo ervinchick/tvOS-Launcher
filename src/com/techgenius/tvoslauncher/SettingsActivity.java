@@ -1043,7 +1043,7 @@ public class SettingsActivity extends Activity {
                         Scenes.cycleClockStyle(this);
                         refreshAll();
                     });
-            row(tr("Default wallpaper clock alignment", "Varsayılan duvar kağıdı saat hizalaması"),
+            row("Положение часов на стандартных обоях",
                     () -> Scenes.defaultClockPosLabel(this),
                     () -> {
                         Scenes.cycleDefaultClockPos(this);
@@ -1051,22 +1051,22 @@ public class SettingsActivity extends Activity {
                     });
             boolean customSceneOn = CustomMedia.isCustomWallpaperEnabled(this, CustomMedia.SCOPE_SCENE);
             if (customSceneOn || Scenes.isAnyCustomSceneEnabled(this)) {
-                row(tr("Custom wallpaper clock alignment", "Özel duvar kağıdı saat hizalaması"),
+                row("Положение часов на своих обоях",
                         () -> Scenes.customClockPosLabel(this),
                         () -> {
                             Scenes.cycleCustomClockPos(this);
                             refreshAll();
                         });
             }
-            row(tr("Each scene stays", "Her sahne süresi"),
+            row("Длительность сцены",
                     () -> Scenes.getStayIntervalLabel(this),
                     () -> {
                         Scenes.cycleStaySeconds(this);
                         refreshAll();
                     });
 
-            section(tr("CUSTOM WALLPAPER", "ÖZEL DUVAR KAĞIDI"));
-            row(tr("Custom wallpaper mode", "Özel duvar kağıdı modu"),
+            section("СВОИ ОБОИ");
+            row("Использовать свои обои",
                     () -> CustomMedia.isCustomWallpaperEnabled(this, CustomMedia.SCOPE_SCENE)
                             ? "Включено" : "Выключено",
                     () -> {
@@ -1075,11 +1075,11 @@ public class SettingsActivity extends Activity {
                         rebuildMainRows();
                     });
             if (customSceneOn) {
-                row(tr("Custom wallpaper settings…", "Özel duvar kağıdı ayarları…"),
+                row("Настроить обои…",
                         () -> CustomMedia.getCustomWallpaperModeLabel(this, CustomMedia.SCOPE_SCENE),
                         () -> openSubMenu("custom_wall:" + CustomMedia.SCOPE_SCENE));
             } else {
-                section(tr("SCENES", "SAHNELER"));
+                section("СЦЕНЫ");
                 List<String> order = Scenes.getSceneOrder(this);
                 for (int i = 0; i < order.size(); i++) {
                     String id = order.get(i);
@@ -1090,16 +1090,16 @@ public class SettingsActivity extends Activity {
                 }
             }
         } else {
-            section(tr("CLASSIC CLOCK & WEATHER", "KLASİK SAAT VE HAVA DURUMU"));
+            section("ЧАСЫ И ПОГОДА");
             boolean bigClock = Scenes.isClassicBigClockEnabled(this);
-            row(tr("Big Clock (Night Scene style)", "Büyük Saat (Gece Sahnesi stili)"),
+            row("Большие часы в стиле ночных сцен",
                     () -> bigClock ? "Включено" : "Выключено",
                     () -> {
                         Scenes.setClassicBigClockEnabled(this, !Scenes.isClassicBigClockEnabled(this));
                         rebuildMainRows();
                     });
             if (bigClock) {
-                row(tr("Clock alignment", "Saat hizalaması"),
+                row("Положение часов",
                         () -> Scenes.classicClockPosLabel(this),
                         () -> {
                             Scenes.cycleClassicClockPos(this);
@@ -1117,7 +1117,7 @@ public class SettingsActivity extends Activity {
                             Scenes.cycleClockStyle(this);
                             refreshAll();
                         });
-                row(tr("Top-right weather shortcut", "Sağ üst hava durumu kısayolu"),
+                row("Погода в правом верхнем углу",
                         () -> SceneHome.isWeatherShortcutEnabled(this) ? "Включено" : "Выключено",
                         () -> {
                             SceneHome.setWeatherShortcutEnabled(this, !SceneHome.isWeatherShortcutEnabled(this));
@@ -1132,9 +1132,9 @@ public class SettingsActivity extends Activity {
                         });
             }
 
-            section(tr("CUSTOM WALLPAPER", "ÖZEL DUVAR KAĞIDI"));
+            section("СВОИ ОБОИ");
             boolean customClassicOn = CustomMedia.isCustomWallpaperEnabled(this, CustomMedia.SCOPE_CLASSIC);
-            row(tr("Custom wallpaper mode", "Özel duvar kağıdı modu"),
+            row("Использовать свои обои",
                     () -> CustomMedia.isCustomWallpaperEnabled(this, CustomMedia.SCOPE_CLASSIC)
                             ? "Включено" : "Выключено",
                     () -> {
@@ -1143,7 +1143,7 @@ public class SettingsActivity extends Activity {
                         rebuildMainRows();
                     });
             if (customClassicOn) {
-                row(tr("Custom wallpaper settings…", "Özel duvar kağıdı ayarları…"),
+                row("Настроить обои…",
                         () -> CustomMedia.getCustomWallpaperModeLabel(this, CustomMedia.SCOPE_CLASSIC),
                         () -> openSubMenu("custom_wall:" + CustomMedia.SCOPE_CLASSIC));
             } else {
