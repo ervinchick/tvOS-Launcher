@@ -36,28 +36,10 @@ public final class I18n {
     public static final String LANG_HE = "he";
 
     public static final String[][] LANGUAGES = {
-        {LANG_EN, "English", "Use Wawid TV in English"},
-        {LANG_TR, "Türkçe", "Wawid TV'ı Türkçe kullanın"},
-        {LANG_AZ, "Azərbaycan dili", "Wawid TV-i Azərbaycan dilində istifadə edin"},
-        {LANG_SV, "Svenska", "Använd Wawid TV på svenska"},
-        {LANG_HI, "हिन्दी (Indian)", "Wawid TV का उपयोग हिन्दी में करें"},
-        {LANG_ES, "Español", "Usar Wawid TV en español"},
-        {LANG_FR, "Français", "Utiliser Wawid TV en français"},
-        {LANG_DE, "Deutsch", "Wawid TV auf Deutsch verwenden"},
-        {LANG_IT, "Italiano", "Usa Wawid TV in italiano"},
-        {LANG_RU, "Русский", "Использовать Wawid TV на русском"},
-        {LANG_PT, "Português", "Usar o Wawid TV em português"},
-        {LANG_AR, "العربية", "استخدم Wawid TV باللغة العربية"},
-        {LANG_JA, "日本語", "Wawid TV を日本語で使用する"},
-        {LANG_ZH, "中文", "使用中文版 Wawid TV"},
-        {LANG_KO, "\ud55c\uad6d\uc5b4", "Wawid TV\ub97c \ud55c\uad6d\uc5b4\ub85c \uc0ac\uc6a9"},
-        {LANG_HE, "\u05e2\u05d1\u05e8\u05d9\u05ea", "\u05e9\u05d9\u05de\u05d5\u05e9 \u05d1-Wawid TV \u05d1\u05e2\u05d1\u05e8\u05d9\u05ea"}
+        {LANG_RU, "Русский", "Русский язык интерфейса Wawid TV"}
     };
 
-    private static final Set<String> SUPPORTED = new HashSet<>(Arrays.asList(
-            LANG_EN, LANG_TR, LANG_AZ, LANG_SV, LANG_HI, LANG_ES, LANG_FR, LANG_DE,
-            LANG_IT, LANG_RU, LANG_PT, LANG_AR, LANG_JA, LANG_ZH, LANG_KO, LANG_HE
-    ));
+    private static final Set<String> SUPPORTED = new HashSet<>(Arrays.asList(LANG_RU));
 
     private static String cachedLang;
     private static final Map<String, String> EN_MAP = new HashMap<>();
