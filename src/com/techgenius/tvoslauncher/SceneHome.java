@@ -1932,6 +1932,22 @@ final class SceneHome {
             if (e.pkg != null) seenPkgs.add(e.pkg);
         }
 
+        String savedDockOrder = Scenes.getDockAppOrder(host);
+        if (!savedDockOrder.isEmpty()) {
+            final Map<String, Integer> dockRanks = new HashMap<>();
+            String[] orderedKeys = savedDockOrder.split("\\|");
+            for (int i = 0; i < orderedKeys.length; i++) {
+                if (!orderedKeys[i].isEmpty()) dockRanks.put(orderedKeys[i], i);
+            }
+            java.util.Collections.sort(homePool, (left, right) -> {
+                String leftKey = left.key != null ? left.key : left.pkg;
+                String rightKey = right.key != null ? right.key : right.pkg;
+                int leftRank = dockRanks.containsKey(leftKey) ? dockRanks.get(leftKey) : Integer.MAX_VALUE;
+                int rightRank = dockRanks.containsKey(rightKey) ? dockRanks.get(rightKey) : Integer.MAX_VALUE;
+                return Integer.compare(leftRank, rightRank);
+            });
+        }
+
         List<MainActivity.AppEntry> otherPool = new ArrayList<>();
         for (MainActivity.AppEntry o : host.otherApps) {
             if (MainActivity.SETTINGS_KEY.equals(o.key) || MainActivity.TV_SETTINGS.equals(o.pkg)) {
@@ -2670,15 +2686,22 @@ final class SceneHome {
     }
 
     private void moveDockBy(int delta) {
-        if (moveDockIdx < 0 || moveDockIdx >= dockEntries.size()) return;
-        MainActivity.AppEntry cur = dockEntries.get(moveDockIdx);
-        int fromReal = host.apps.indexOf(cur);
-        int toReal = fromReal + delta;
-        if (fromReal < 0 || toReal < 0 || toReal >= host.apps.size()) return;
-        host.apps.remove(fromReal);
-        host.apps.add(toReal, cur);
-        host.saveOrder();
-        moveDockIdx += delta;
+        if (moveDockIdx < 0 || moveDockIdx >= currentMaxSingleRowApps) return;
+        int targetIdx = moveDockIdx + delta;
+        if (targetIdx < 0 || targetIdx >= currentMaxSingleRowApps || targetIdx >= dockEntries.size()) return;
+        MainActivity.AppEntry target = dockEntries.get(targetIdx);
+        if (target == null || target.key == null || GEAR_KEY.equals(target.key) || MORE_KEY.equals(target.key)) return;
+
+        java.util.Collections.swap(dockEntries, moveDockIdx, targetIdx);
+        StringBuilder order = new StringBuilder();
+        for (MainActivity.AppEntry entry : dockEntries) {
+            if (entry == null || entry.key == null || GEAR_KEY.equals(entry.key) || MORE_KEY.equals(entry.key)) continue;
+            if (order.length() > 0) order.append('|');
+            order.append(entry.key);
+        }
+        Scenes.setDockAppOrder(host, order.toString());
+
+        moveDockIdx = targetIdx;
         rebuildDock();
         focusDock(moveDockIdx);
         if (moveDockIdx >= 0 && moveDockIdx < dockTiles.size()) {
