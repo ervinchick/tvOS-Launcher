@@ -86,9 +86,10 @@ public final class HomeDashboard {
     public static final String WIDGET_NEWS = "news";
     public static final String WIDGET_TOP_MEDIA = "top_media";
 
+    // Wawid TV ships with a neutral, region-independent dashboard.
+    // Prayer-time and cricket widgets are intentionally excluded from the product experience.
     public static final String[] DEFAULT_WIDGET_IDS = {
-        WIDGET_PRAYER, WIDGET_FOOTBALL, WIDGET_RELEASES, WIDGET_WEATHER,
-        WIDGET_CRICKET, WIDGET_NEWS, WIDGET_TOP_MEDIA
+        WIDGET_FOOTBALL, WIDGET_RELEASES, WIDGET_WEATHER, WIDGET_NEWS, WIDGET_TOP_MEDIA
     };
 
     private static volatile String sMovingWidgetId = null;
@@ -141,7 +142,7 @@ public final class HomeDashboard {
         if (!sp.getBoolean(KEY_ALL_DEFAULT_V2, false)) {
             sp.edit()
                     .putBoolean(KEY_ALL_DEFAULT_V2, true)
-                    .putBoolean(KEY_W_CRICKET, true)
+                    .putBoolean(KEY_W_CRICKET, false)
                     .putBoolean(KEY_W_NEWS, true)
                     .putBoolean(KEY_W_TOP_MEDIA, true)
                     .apply();
@@ -166,7 +167,7 @@ public final class HomeDashboard {
     }
 
     public static boolean isWidgetPrayerEnabled(Context c) {
-        return prefs(c).getBoolean(KEY_W_PRAYER, true);
+        return prefs(c).getBoolean(KEY_W_PRAYER, false);
     }
 
     public static void setWidgetPrayerEnabled(Context c, boolean en) {
@@ -198,7 +199,7 @@ public final class HomeDashboard {
     }
 
     public static boolean isWidgetCricketEnabled(Context c) {
-        return prefs(c).getBoolean(KEY_W_CRICKET, true);
+        return prefs(c).getBoolean(KEY_W_CRICKET, false);
     }
 
     public static void setWidgetCricketEnabled(Context c, boolean en) {
