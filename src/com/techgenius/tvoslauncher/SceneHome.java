@@ -281,8 +281,20 @@ final class SceneHome {
         searchAiRow.addView(wawAiInput, new LinearLayout.LayoutParams(dp(310), controlSize));
         FrameLayout.LayoutParams rowLp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, controlSize, Gravity.TOP | Gravity.START);
         rowLp.leftMargin = dp(40);
-        rowLp.topMargin = dp(28);
+        rowLp.topMargin = dp(112);
         overlay.addView(searchAiRow, rowLp);
+    }
+
+    void attachSearchAiBarToRoot() {
+        if (searchAiRow == null || searchAiRow.getParent() == host.root) return;
+        if (searchAiRow.getParent() instanceof ViewGroup) {
+            ((ViewGroup) searchAiRow.getParent()).removeView(searchAiRow);
+        }
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, dp(42), Gravity.TOP | Gravity.START);
+        lp.leftMargin = dp(40);
+        lp.topMargin = dp(112);
+        host.root.addView(searchAiRow, lp);
     }
 
     private void askWawAi(String question) {
