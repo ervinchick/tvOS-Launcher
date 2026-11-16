@@ -58,7 +58,7 @@
 
     <application
         android:supportsRtl="true"
-        android:label="tvOS Launcher"
+        android:label="Wawid TV"
         android:icon="@drawable/ic_launcher"
         android:banner="@drawable/banner"
         android:theme="@style/HomeTheme"
@@ -97,7 +97,7 @@
         <service
             android:name=".PowerService"
             android:exported="true"
-            android:label="tvOS Launcher – Button Mapper &amp; Control Panel"
+            android:label="Wawid TV – Управление и быстрые настройки"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
@@ -109,7 +109,7 @@
         <service
             android:name=".MediaWatchService"
             android:exported="true"
-            android:label="tvOS Launcher – Continue Watching"
+            android:label="Wawid TV – Продолжить просмотр"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
