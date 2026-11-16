@@ -2263,7 +2263,7 @@ final class SceneHome {
             mLabels.add(I18n.s(host, "Reset Layout", "Düzeni Sıfırla"));
             mActions.add(() -> {
                 closeSheetImmediate();
-                host.prefs.edit().remove(MainActivity.PREF_ORDER).remove(MainActivity.PREF_OTHER).apply();
+                host.prefs.edit().putString(host.appOrderPrefKey(), "").remove(MainActivity.PREF_OTHER).apply();
                 host.loadApps();
                 rebuildDock();
                 focusDock(0);
@@ -2589,7 +2589,7 @@ final class SceneHome {
 
         labels.add(I18n.s(host, "Reset Layout", "Düzeni Sıfırla"));
         actions.add(() -> {
-            host.prefs.edit().remove(MainActivity.PREF_ORDER).remove(MainActivity.PREF_OTHER).apply();
+            host.prefs.edit().putString(host.appOrderPrefKey(), "").remove(MainActivity.PREF_OTHER).apply();
             host.loadApps();
             rebuildDock();
             focusDock(0);
