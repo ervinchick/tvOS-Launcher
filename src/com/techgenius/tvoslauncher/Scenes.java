@@ -471,6 +471,19 @@ public final class Scenes {
         prefs(c).edit().putInt(dockRowsKey(c), clamped).apply();
     }
 
+    private static String dockAppOrderKey(Context c) {
+        return "dock_app_order_" + (LOOK_CLASSIC.equals(getLook(c)) ? LOOK_CLASSIC : LOOK_SCENES);
+    }
+
+    public static String getDockAppOrder(Context c) {
+        return c == null ? "" : prefs(c).getString(dockAppOrderKey(c), "");
+    }
+
+    public static void setDockAppOrder(Context c, String order) {
+        if (c == null) return;
+        prefs(c).edit().putString(dockAppOrderKey(c), order == null ? "" : order).apply();
+    }
+
     public static int cycleDockRows(Context c) {
         int cur = getDockRows(c);
         int next = (cur % 3) + 1;
