@@ -350,6 +350,54 @@ public final class Scenes {
         prefs(c).edit().putString("look_mode", LOOK_CLASSIC.equals(look) ? LOOK_CLASSIC : LOOK_SCENES).apply();
     }
 
+    // Dock placement is stored separately for Classic and Night Scenes layouts.
+    private static String dockPositionKey(Context c) {
+        return "dock_position_" + (LOOK_CLASSIC.equals(getLook(c)) ? LOOK_CLASSIC : LOOK_SCENES);
+    }
+
+    public static String getDockPosition(Context c) {
+        if (c == null) return "bottom";
+        String value = prefs(c).getString(dockPositionKey(c), "bottom");
+        return "top".equals(value) || "left".equals(value) || "right".equals(value) ? value : "bottom";
+    }
+
+    public static void setDockPosition(Context c, String position) {
+        if (c == null) return;
+        String value = ("top".equals(position) || "left".equals(position) || "right".equals(position))
+                ? position : "bottom";
+        prefs(c).edit().putString(dockPositionKey(c), value).apply();
+    }
+
+    public static boolean isSideDockPosition(Context c) {
+        String position = getDockPosition(c);
+        return "left".equals(position) || "right".equals(position);
+    }
+
+    public static String[] dockPositionNames() {
+        return new String[]{"Снизу", "Сверху", "Слева", "Справа"};
+    }
+
+    public static String dockPositionValue(int index) {
+        switch (index) {
+            case 1: return "top";
+            case 2: return "left";
+            case 3: return "right";
+            default: return "bottom";
+        }
+    }
+
+    public static int dockPositionIndex(Context c) {
+        String position = getDockPosition(c);
+        if ("top".equals(position)) return 1;
+        if ("left".equals(position)) return 2;
+        if ("right".equals(position)) return 3;
+        return 0;
+    }
+
+    public static String dockPositionLabel(Context c) {
+        return dockPositionNames()[dockPositionIndex(c)];
+    }
+
     public static int getDockScalePercent(Context c) {
         if (c == null) return 100;
         int pct = prefs(c).getInt("dock_scale_pct", 100);
