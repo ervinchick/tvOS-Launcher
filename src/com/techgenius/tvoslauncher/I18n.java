@@ -1705,7 +1705,8 @@ public final class I18n {
         SharedPreferences p = c.getSharedPreferences("settings", Context.MODE_PRIVATE);
         String saved = p.getString("lang", null);
         if (saved == null || !SUPPORTED.contains(saved)) {
-            saved = detectSystemLang(c);
+            // Wawid TV's first-run experience is Russian-first.
+            saved = LANG_RU;
             p.edit().putString("lang", saved).apply();
             if (!p.contains("clock_24h")) {
                 Scenes.setClock24h(c, isDefault24hForLang(saved));
