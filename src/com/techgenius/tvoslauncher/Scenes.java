@@ -421,28 +421,54 @@ public final class Scenes {
         prefs(c).edit().putString(greetingKey(c), value).apply();
     }
 
+    private static String greetingPositionKey(Context c) {
+        return "home_greeting_position_" + (LOOK_CLASSIC.equals(getLook(c)) ? LOOK_CLASSIC : LOOK_SCENES);
+    }
+
+    public static String getHomeGreetingPosition(Context c) {
+        if (c == null) return "left";
+        String value = prefs(c).getString(greetingPositionKey(c), "left");
+        return "center".equals(value) || "right".equals(value) ? value : "left";
+    }
+
+    public static void setHomeGreetingPosition(Context c, String position) {
+        if (c == null) return;
+        String value = "center".equals(position) || "right".equals(position) ? position : "left";
+        prefs(c).edit().putString(greetingPositionKey(c), value).apply();
+    }
+
+    private static String dockScaleKey(Context c) {
+        return "dock_scale_pct_" + (LOOK_CLASSIC.equals(getLook(c)) ? LOOK_CLASSIC : LOOK_SCENES);
+    }
+
+    private static String dockRowsKey(Context c) {
+        return "dock_rows_" + (LOOK_CLASSIC.equals(getLook(c)) ? LOOK_CLASSIC : LOOK_SCENES);
+    }
+
     public static int getDockScalePercent(Context c) {
         if (c == null) return 100;
-        int pct = prefs(c).getInt("dock_scale_pct", 100);
+        int fallback = prefs(c).getInt("dock_scale_pct", 100);
+        int pct = prefs(c).getInt(dockScaleKey(c), fallback);
         return Math.max(50, Math.min(150, pct));
     }
 
     public static void setDockScalePercent(Context c, int pct) {
         if (c == null) return;
         int clamped = Math.max(50, Math.min(150, pct));
-        prefs(c).edit().putInt("dock_scale_pct", clamped).apply();
+        prefs(c).edit().putInt(dockScaleKey(c), clamped).apply();
     }
 
     public static int getDockRows(Context c) {
         if (c == null) return 1;
-        int rows = prefs(c).getInt("dock_rows", 1);
+        int fallback = prefs(c).getInt("dock_rows", 1);
+        int rows = prefs(c).getInt(dockRowsKey(c), fallback);
         return Math.max(1, Math.min(3, rows));
     }
 
     public static void setDockRows(Context c, int rows) {
         if (c == null) return;
         int clamped = Math.max(1, Math.min(3, rows));
-        prefs(c).edit().putInt("dock_rows", clamped).apply();
+        prefs(c).edit().putInt(dockRowsKey(c), clamped).apply();
     }
 
     public static int cycleDockRows(Context c) {
