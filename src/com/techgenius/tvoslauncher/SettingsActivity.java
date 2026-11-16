@@ -1091,6 +1091,17 @@ public class SettingsActivity extends Activity {
                         })
                         .setNegativeButton("Отмена", null)
                         .show());
+        row("Сбросить порядок иконок",
+                () -> "Только для текущего режима",
+                () -> new AlertDialog.Builder(this)
+                        .setTitle("Сбросить порядок иконок?")
+                        .setMessage("Будет восстановлен стандартный порядок приложений в текущем режиме главного экрана.")
+                        .setPositiveButton("Сбросить", (dialog, which) -> {
+                            Scenes.setDockAppOrder(this, "");
+                            refreshAll();
+                        })
+                        .setNegativeButton("Отмена", null)
+                        .show());
 
         if (scenesLook) {
             section("ЧАСЫ НОЧНЫХ СЦЕН");
