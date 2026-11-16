@@ -250,18 +250,18 @@ public class SettingsActivity extends Activity {
 
     private String sectionTitle(String sec) {
         switch (sec) {
-            case LOOK_SCENES: return tr("Appearance and scenes", "Görünüm ve sahneler");
+            case LOOK_SCENES: return "Внешний вид";
             case LOCATION:
-            case WEATHER: return tr("Weather and location", "Hava durumu ve konum");
-            case APPS: return tr("Apps", "Uygulamalar");
-            case PROFILES: return tr("People", "Kişiler");
-            case CONTROL_PANEL: return tr("Control Panel", "Denetim Paneli");
-            case BUTTON_MAPPER: return tr("Button mapper", "Düğme eşleyici");
-            case QUICK: return tr("Quick settings", "Hızlı ayarlar");
-            case LANGUAGE: return tr("Language", "Dil");
-            case ADVANCED: return tr("Advanced", "Gelişmiş");
-            case UPDATES: return tr("Updates", "Güncellemeler");
-            case ABOUT: return tr("About", "Hakkında");
+            case WEATHER: return "Погода и местоположение";
+            case APPS: return "Приложения";
+            case PROFILES: return "Пользователи";
+            case CONTROL_PANEL: return "Панель управления";
+            case BUTTON_MAPPER: return "Кнопки пульта";
+            case QUICK: return "Быстрые настройки";
+            case LANGUAGE: return "Язык";
+            case ADVANCED: return "Дополнительно";
+            case UPDATES: return "Обновления";
+            case ABOUT: return "О лаунчере";
             default: return sec;
         }
     }
@@ -297,7 +297,7 @@ public class SettingsActivity extends Activity {
         columns.addView(sideCol, sideLp);
 
         sideTitleView = new TextView(this);
-        sideTitleView.setText(tr("Home settings", "Ana ekran ayarları"));
+        sideTitleView.setText("Настройки Wawid TV");
         sideTitleView.setTextColor(Color.WHITE);
         sideTitleView.setTypeface(Ui.font(this, "display"));
         sideTitleView.setLetterSpacing(-0.022f);
@@ -672,7 +672,7 @@ public class SettingsActivity extends Activity {
     }
 
     private void updateSidebarTranslations() {
-        sideTitleView.setText(tr("Home settings", "Ana ekran ayarları"));
+        sideTitleView.setText("Настройки Wawid TV");
         for (String[] pair : SIDEBAR_SECTIONS) {
             String key = pair[0];
             TextView label = sideLabels.get(key);
