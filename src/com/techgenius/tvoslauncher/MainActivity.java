@@ -3786,7 +3786,8 @@ public class MainActivity extends Activity {
         Collections.sort(hiddenApps, (x, y) -> x.label.compareToIgnoreCase(y.label));
         Collections.sort(otherApps, (x, y) -> x.label.compareToIgnoreCase(y.label));
 
-        for (String key : prefs.getString(PREF_ORDER, "").split(",")) {
+        String savedOrder = getSavedAppOrder();
+        for (String key : savedOrder.split(",")) {
             AppEntry e = pool.remove(key);
             if (e != null) apps.add(e);
         }
@@ -3797,7 +3798,7 @@ public class MainActivity extends Activity {
         });
         apps.addAll(rest);
         // Inputs starts as the first card in the dock until it is moved.
-        if (!Arrays.asList(prefs.getString(PREF_ORDER, "").split(",")).contains(INPUTS_KEY)) {
+        if (!Arrays.asList(savedOrder.split(",")).contains(INPUTS_KEY)) {
             for (int i = 0; i < apps.size(); i++) {
                 if (INPUTS_KEY.equals(apps.get(i).key)) {
                     apps.add(0, apps.remove(i));
@@ -3948,13 +3949,22 @@ public class MainActivity extends Activity {
         }
     }
 
+    String appOrderPrefKey() {
+        return PREF_ORDER + (Scenes.isScenesLook(this) ? "_scenes" : "_classic");
+    }
+
+    String getSavedAppOrder() {
+        String key = appOrderPrefKey();
+        return prefs.contains(key) ? prefs.getString(key, "") : prefs.getString(PREF_ORDER, "");
+    }
+
     void saveOrder() {
         StringBuilder sb = new StringBuilder();
         for (AppEntry e : apps) {
             if (sb.length() > 0) sb.append(',');
             sb.append(e.key);
         }
-        prefs.edit().putString(PREF_ORDER, sb.toString()).apply();
+        prefs.edit().putString(appOrderPrefKey(), sb.toString()).apply();
     }
 
     void setOtherApp(AppEntry a, boolean toOther) {
@@ -4209,7 +4219,7 @@ public class MainActivity extends Activity {
         if (!folderMode) {
             labels.add(I18n.s(this, "Reset Layout", "Düzeni Sıfırla"));
             actions.add(() -> {
-                prefs.edit().remove(PREF_ORDER).apply();
+                prefs.edit().putString(appOrderPrefKey(), "").apply();
                 reload(a.key);
             });
         }
