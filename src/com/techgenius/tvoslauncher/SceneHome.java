@@ -2660,8 +2660,14 @@ final class SceneHome {
             default: return "Градиентные";
         }
     }
+    static String[] iconAppearanceNames() {
+        return new String[]{"Оригинальные", "Тёмные", "Тонированные", "Светлые", "Градиентные", "Космические"};
+    }
+    static void setIconAppearance(Context c, int style) {
+        Profiles.homePrefs(c).edit().putInt(KEY_ICON_APPEARANCE, Math.max(0, Math.min(5, style))).apply();
+    }
     static void cycleIconAppearance(Context c) {
-        Profiles.homePrefs(c).edit().putInt(KEY_ICON_APPEARANCE, (iconAppearance(c) + 1) % 6).apply();
+        setIconAppearance(c, (iconAppearance(c) + 1) % 6);
     }
     private Bitmap applyIconAppearance(Bitmap source) {
         if (source == null || source.isRecycled()) return source;
