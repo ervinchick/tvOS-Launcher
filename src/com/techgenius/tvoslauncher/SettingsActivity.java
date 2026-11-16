@@ -297,7 +297,7 @@ public class SettingsActivity extends Activity {
         columns.addView(sideCol, sideLp);
 
         sideTitleView = new TextView(this);
-        sideTitleView.setText("Настройки Wawid TV");
+        sideTitleView.setText("Wawid TV");
         sideTitleView.setTextColor(Color.WHITE);
         sideTitleView.setTypeface(Ui.font(this, "display"));
         sideTitleView.setLetterSpacing(-0.022f);
@@ -307,8 +307,20 @@ public class SettingsActivity extends Activity {
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         stLp.setMarginStart(u(16));
         stLp.topMargin = u(10);
-        stLp.bottomMargin = u(16);
+        stLp.bottomMargin = u(1);
         sideCol.addView(sideTitleView, stLp);
+
+        TextView sideSubtitle = new TextView(this);
+        sideSubtitle.setText("Ц Е Н Т Р   У П Р А В Л Е Н И Я");
+        sideSubtitle.setTextColor(0x8FE0C7FF);
+        sideSubtitle.setTypeface(Ui.font(this, "semibold"));
+        sideSubtitle.setLetterSpacing(0.10f);
+        Ui.textSize(sideSubtitle, 8.5f);
+        LinearLayout.LayoutParams ssLp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ssLp.setMarginStart(u(17));
+        ssLp.bottomMargin = u(17);
+        sideCol.addView(sideSubtitle, ssLp);
 
         sideList = new LinearLayout(this);
         sideList.setOrientation(LinearLayout.VERTICAL);
@@ -331,7 +343,7 @@ public class SettingsActivity extends Activity {
         mainHeadView.setTextColor(Color.WHITE);
         mainHeadView.setTypeface(Ui.font(this, "display"));
         mainHeadView.setLetterSpacing(-0.015f);
-        Ui.textSize(mainHeadView, 20f);
+        Ui.textSize(mainHeadView, 22f);
         mainHeadView.setSingleLine(true);
         LinearLayout.LayoutParams mhLp = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -366,7 +378,7 @@ public class SettingsActivity extends Activity {
         GradientDrawable msgBg = new GradientDrawable();
         msgBg.setCornerRadius(u(11));
         msgBg.setColor(0xD8181A24);
-        msgBg.setStroke(Math.max(1, u(1)), 0x557650D8);
+        msgBg.setStroke(Math.max(1, u(1)), 0x668057E8);
         msgView.setBackground(msgBg);
         msgView.setPaddingRelative(u(14), u(6), u(14), u(6));
         LinearLayout.LayoutParams msgLp = new LinearLayout.LayoutParams(
@@ -653,13 +665,13 @@ public class SettingsActivity extends Activity {
             TextView label = sideLabels.get(key);
 
             if (focused) {
-                pillBg.setColor(0xFF7650D8);
+                pillBg.setColor(0xFF8057E8);
                 iconBg.setColor(0x33251A46);
                 iconIv.setImageBitmap(Glyphs.get(glyph, iconGlyphSz, Color.WHITE));
                 label.setTextColor(Color.WHITE);
             } else if (active) {
-                pillBg.setColor(0x447650D8);
-                iconBg.setColor(0x337650D8);
+                pillBg.setColor(0x558057E8);
+                iconBg.setColor(0x448057E8);
                 iconIv.setImageBitmap(Glyphs.get(glyph, iconGlyphSz, Color.WHITE));
                 label.setTextColor(0xFFF2ECFF);
             } else {
@@ -672,7 +684,7 @@ public class SettingsActivity extends Activity {
     }
 
     private void updateSidebarTranslations() {
-        sideTitleView.setText("Настройки Wawid TV");
+        sideTitleView.setText("Wawid TV");
         for (String[] pair : SIDEBAR_SECTIONS) {
             String key = pair[0];
             TextView label = sideLabels.get(key);
@@ -1472,9 +1484,10 @@ public class SettingsActivity extends Activity {
                 updateSidebarStyles();
                 updateHintText(false);
             }
-            bg.setColor(has ? Color.WHITE : 0x14FFFFFF);
-            l.setTextColor(has ? 0xFF111114 : 0xEBF4F4F6);
-            v.setTextColor(has ? 0x99000000 : 0x9EFFFFFF);
+            bg.setColor(has ? 0xFFF0E9FF : 0x14FFFFFF);
+            bg.setStroke(has ? Math.max(1, u(1)) : 0, has ? 0xFFB58AFF : 0x00000000);
+            l.setTextColor(has ? 0xFF21182B : 0xEBF4F4F6);
+            v.setTextColor(has ? 0x990B0711 : 0x9EFFFFFF);
             view.animate().scaleX(has ? 1.02f : 1f).scaleY(has ? 1.02f : 1f)
                     .setDuration(160).start();
         });
@@ -4297,8 +4310,9 @@ public class SettingsActivity extends Activity {
                 updateSidebarStyles();
                 updateHintText(false);
             }
-            bg.setColor(has ? Color.WHITE : 0x14FFFFFF);
-            t.setTextColor(has ? 0xFF111114 : 0xEBF4F4F6);
+            bg.setColor(has ? 0xFFF0E9FF : 0x14FFFFFF);
+            bg.setStroke(has ? Math.max(1, u(1)) : 0, has ? 0xFFB58AFF : 0x00000000);
+            t.setTextColor(has ? 0xFF21182B : 0xEBF4F4F6);
             if (sRef != null) sRef.setTextColor(has ? 0x99000000 : 0x99FFFFFF);
             if (checked) {
                 mark.setImageBitmap(has ? cachedCheckDark : cachedCheckWhite);
@@ -4385,8 +4399,9 @@ public class SettingsActivity extends Activity {
                 updateSidebarStyles();
                 updateHintText(true);
             }
-            bg.setColor(has ? Color.WHITE : 0x14FFFFFF);
-            l.setTextColor(has ? 0xFF111114 : 0xEBF4F4F6);
+            bg.setColor(has ? 0xFFF0E9FF : 0x14FFFFFF);
+            bg.setStroke(has ? Math.max(1, u(1)) : 0, has ? 0xFFB58AFF : 0x00000000);
+            l.setTextColor(has ? 0xFF21182B : 0xEBF4F4F6);
             updateCheck.run();
             float scale = has ? (isLifted ? 1.04f : 1.02f) : 1f;
             float tx = has && isLifted ? u(6) : 0f;
@@ -4551,8 +4566,9 @@ public class SettingsActivity extends Activity {
                 updateSidebarStyles();
                 updateHintText(false);
             }
-            bg.setColor(has ? Color.WHITE : 0x14FFFFFF);
-            l.setTextColor(has ? 0xFF111114 : 0xEBF4F4F6);
+            bg.setColor(has ? 0xFFF0E9FF : 0x14FFFFFF);
+            bg.setStroke(has ? Math.max(1, u(1)) : 0, has ? 0xFFB58AFF : 0x00000000);
+            l.setTextColor(has ? 0xFF21182B : 0xEBF4F4F6);
             updateCheck.run();
             view.animate().scaleX(has ? 1.02f : 1f).scaleY(has ? 1.02f : 1f)
                     .setDuration(160).start();
@@ -4696,8 +4712,9 @@ public class SettingsActivity extends Activity {
                 updateSidebarStyles();
                 updateHintText(false);
             }
-            bg.setColor(has ? Color.WHITE : 0x14FFFFFF);
-            l.setTextColor(has ? 0xFF111114 : 0xEBF4F4F6);
+            bg.setColor(has ? 0xFFF0E9FF : 0x14FFFFFF);
+            bg.setStroke(has ? Math.max(1, u(1)) : 0, has ? 0xFFB58AFF : 0x00000000);
+            l.setTextColor(has ? 0xFF21182B : 0xEBF4F4F6);
             if (checked) {
                 mark.setImageBitmap(Glyphs.get("check", cs, has ? 0xFF111114 : Color.WHITE));
             }
@@ -4834,8 +4851,9 @@ public class SettingsActivity extends Activity {
                 updateSidebarStyles();
                 updateHintText(false);
             }
-            bg.setColor(has ? Color.WHITE : 0x14FFFFFF);
-            l.setTextColor(has ? 0xFF111114 : 0xEBF4F4F6);
+            bg.setColor(has ? 0xFFF0E9FF : 0x14FFFFFF);
+            bg.setStroke(has ? Math.max(1, u(1)) : 0, has ? 0xFFB58AFF : 0x00000000);
+            l.setTextColor(has ? 0xFF21182B : 0xEBF4F4F6);
             updateCheck.run();
             view.animate().scaleX(has ? 1.02f : 1f).scaleY(has ? 1.02f : 1f)
                     .setDuration(160).start();
@@ -4978,8 +4996,9 @@ public class SettingsActivity extends Activity {
                 updateSidebarStyles();
                 updateHintText(false);
             }
-            bg.setColor(has ? Color.WHITE : 0x14FFFFFF);
-            l.setTextColor(has ? 0xFF111114 : 0xEBF4F4F6);
+            bg.setColor(has ? 0xFFF0E9FF : 0x14FFFFFF);
+            bg.setStroke(has ? Math.max(1, u(1)) : 0, has ? 0xFFB58AFF : 0x00000000);
+            l.setTextColor(has ? 0xFF21182B : 0xEBF4F4F6);
             if (checked) {
                 mark.setImageBitmap(Glyphs.get("check", cs, has ? 0xFF111114 : Color.WHITE));
             }
@@ -5138,8 +5157,9 @@ public class SettingsActivity extends Activity {
                 updateSidebarStyles();
                 updateHintText(false);
             }
-            bg.setColor(has ? Color.WHITE : 0x14FFFFFF);
-            l.setTextColor(has ? 0xFF111114 : 0xEBF4F4F6);
+            bg.setColor(has ? 0xFFF0E9FF : 0x14FFFFFF);
+            bg.setStroke(has ? Math.max(1, u(1)) : 0, has ? 0xFFB58AFF : 0x00000000);
+            l.setTextColor(has ? 0xFF21182B : 0xEBF4F4F6);
             updateCheck.run();
             view.animate().scaleX(has ? 1.02f : 1f).scaleY(has ? 1.02f : 1f)
                     .setDuration(160).start();
@@ -5244,8 +5264,9 @@ public class SettingsActivity extends Activity {
                 updateSidebarStyles();
                 updateHintText(false);
             }
-            bg.setColor(has ? Color.WHITE : 0x14FFFFFF);
-            l.setTextColor(has ? 0xFF111114 : 0xEBF4F4F6);
+            bg.setColor(has ? 0xFFF0E9FF : 0x14FFFFFF);
+            bg.setStroke(has ? Math.max(1, u(1)) : 0, has ? 0xFFB58AFF : 0x00000000);
+            l.setTextColor(has ? 0xFF21182B : 0xEBF4F4F6);
             updateCheck.run();
             view.animate().scaleX(has ? 1.02f : 1f).scaleY(has ? 1.02f : 1f)
                     .setDuration(160).start();
@@ -5382,8 +5403,9 @@ public class SettingsActivity extends Activity {
                 updateSidebarStyles();
                 updateHintText(false);
             }
-            bg.setColor(has ? Color.WHITE : 0x14FFFFFF);
-            l.setTextColor(has ? 0xFF111114 : 0xEBF4F4F6);
+            bg.setColor(has ? 0xFFF0E9FF : 0x14FFFFFF);
+            bg.setStroke(has ? Math.max(1, u(1)) : 0, has ? 0xFFB58AFF : 0x00000000);
+            l.setTextColor(has ? 0xFF21182B : 0xEBF4F4F6);
             updateCheck.run();
             view.animate().scaleX(has ? 1.02f : 1f).scaleY(has ? 1.02f : 1f)
                     .setDuration(160).start();
@@ -5478,8 +5500,9 @@ public class SettingsActivity extends Activity {
                 updateSidebarStyles();
                 updateHintText(false);
             }
-            bg.setColor(has ? Color.WHITE : 0x14FFFFFF);
-            l.setTextColor(has ? 0xFF111114 : 0xEBF4F4F6);
+            bg.setColor(has ? 0xFFF0E9FF : 0x14FFFFFF);
+            bg.setStroke(has ? Math.max(1, u(1)) : 0, has ? 0xFFB58AFF : 0x00000000);
+            l.setTextColor(has ? 0xFF21182B : 0xEBF4F4F6);
             if (checked) {
                 mark.setImageBitmap(Glyphs.get("check", cs, has ? 0xFF111114 : Color.WHITE));
             }
@@ -5547,9 +5570,10 @@ public class SettingsActivity extends Activity {
                 updateSidebarStyles();
                 updateHintText(false);
             }
-            bg.setColor(has ? Color.WHITE : 0x14FFFFFF);
-            l.setTextColor(has ? 0xFF111114 : 0xEBF4F4F6);
-            v.setTextColor(has ? 0x99000000 : 0x9EFFFFFF);
+            bg.setColor(has ? 0xFFF0E9FF : 0x14FFFFFF);
+            bg.setStroke(has ? Math.max(1, u(1)) : 0, has ? 0xFFB58AFF : 0x00000000);
+            l.setTextColor(has ? 0xFF21182B : 0xEBF4F4F6);
+            v.setTextColor(has ? 0x990B0711 : 0x9EFFFFFF);
             view.animate().scaleX(has ? 1.02f : 1f).scaleY(has ? 1.02f : 1f)
                     .setDuration(160).start();
         });
@@ -5630,10 +5654,11 @@ public class SettingsActivity extends Activity {
                 updateSidebarStyles();
                 updateHintText(false);
             }
-            bg.setColor(has ? Color.WHITE : 0x14FFFFFF);
-            l.setTextColor(has ? 0xFF111114 : 0xEBF4F4F6);
-            v.setTextColor(has ? 0x99000000 : 0x9EFFFFFF);
-            chev.setTextColor(has ? 0x99000000 : 0x9EFFFFFF);
+            bg.setColor(has ? 0xFFF0E9FF : 0x14FFFFFF);
+            bg.setStroke(has ? Math.max(1, u(1)) : 0, has ? 0xFFB58AFF : 0x00000000);
+            l.setTextColor(has ? 0xFF21182B : 0xEBF4F4F6);
+            v.setTextColor(has ? 0x990B0711 : 0x9EFFFFFF);
+            chev.setTextColor(has ? 0x990B0711 : 0x9EFFFFFF);
             view.animate().scaleX(has ? 1.02f : 1f).scaleY(has ? 1.02f : 1f)
                     .setDuration(160).start();
         });
