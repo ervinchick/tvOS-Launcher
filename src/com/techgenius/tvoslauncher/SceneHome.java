@@ -29,6 +29,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.EditText;
+import android.view.inputmethod.EditorInfo;
+import android.app.AlertDialog;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -56,6 +67,9 @@ final class SceneHome {
     final List<WatchPopup> watchPopups = new ArrayList<>();
 
     LinearLayout whoBar;
+    LinearLayout searchAiRow;
+    ImageView systemSearchButton;
+    EditText wawAiInput;
     LinearLayout weatherBtn;
     ImageView weatherIcon;
     LinearLayout moonBtn;
@@ -148,6 +162,7 @@ final class SceneHome {
         this.overlay.setClipToPadding(false);
 
         buildTopBar();
+        buildSearchAiBar();
         buildKeepWatchingShelf();
         buildDashboardBox();
         buildBottomDock();
@@ -214,6 +229,107 @@ final class SceneHome {
 
     // ---------------------------------------------------------------- Top Bar (Profile pill & Control Panel in top-right)
 
+    private void buildSearchAiBar() {
+        searchAiRow = new LinearLayout(host);
+        searchAiRow.setOrientation(LinearLayout.HORIZONTAL);
+        searchAiRow.setGravity(Gravity.CENTER_VERTICAL);
+        searchAiRow.setClipChildren(false);
+        searchAiRow.setClipToPadding(false);
+        final int controlSize = dp(42);
+        systemSearchButton = new ImageView(host);
+        systemSearchButton.setScaleType(ImageView.ScaleType.CENTER);
+        systemSearchButton.setImageBitmap(Glyphs.get("search", dp(19), 0xFFF4F4F6));
+        MainActivity.LiquidGlass searchGlass = new MainActivity.LiquidGlass(controlSize / 2f, 0x6614161C, host.glassSource, host.screenW, host.screenH, host.unit);
+        searchGlass.lens = dp(5);
+        searchGlass.rimStrength = 0.45f;
+        systemSearchButton.setBackground(searchGlass);
+        systemSearchButton.setFocusable(true);
+        systemSearchButton.setClickable(true);
+        systemSearchButton.setContentDescription("Поиск приложений и настроек");
+        LinearLayout.LayoutParams searchLp = new LinearLayout.LayoutParams(controlSize, controlSize);
+        searchLp.rightMargin = dp(10);
+        searchAiRow.addView(systemSearchButton, searchLp);
+        GradientDrawable ring = new GradientDrawable();
+        ring.setShape(GradientDrawable.OVAL);
+        ring.setColor(Color.TRANSPARENT);
+        ring.setStroke(dp(2), Color.WHITE);
+        systemSearchButton.setOnFocusChangeListener((v, has) -> {
+            v.setForeground(has ? ring : null);
+            v.animate().scaleX(has ? 1.08f : 1f).scaleY(has ? 1.08f : 1f).setDuration(180).setInterpolator(MainActivity.LIFT).start();
+        });
+        systemSearchButton.setOnClickListener(v -> host.showSearch(null));
+        wawAiInput = new EditText(host);
+        wawAiInput.setSingleLine(true);
+        wawAiInput.setTextSize(13f);
+        wawAiInput.setTextColor(0xFFF4F4F6);
+        wawAiInput.setHintTextColor(0x99F4F4F6);
+        wawAiInput.setHint("Спросить WawAI…");
+        wawAiInput.setImeOptions(EditorInfo.IME_ACTION_SEND);
+        wawAiInput.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        wawAiInput.setPadding(dp(16), 0, dp(16), 0);
+        wawAiInput.setBackground(new MainActivity.LiquidGlass(dp(22), 0x6614161C, host.glassSource, host.screenW, host.screenH, host.unit));
+        wawAiInput.setFocusable(true);
+        wawAiInput.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEND || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP)) {
+                String q = wawAiInput.getText().toString().trim();
+                if (!q.isEmpty()) askWawAi(q);
+                return true;
+            }
+            return false;
+        });
+        wawAiInput.setOnFocusChangeListener((v, has) -> v.animate().scaleX(has ? 1.015f : 1f).scaleY(has ? 1.015f : 1f).setDuration(160).setInterpolator(MainActivity.LIFT).start());
+        searchAiRow.addView(wawAiInput, new LinearLayout.LayoutParams(dp(310), controlSize));
+        FrameLayout.LayoutParams rowLp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, controlSize, Gravity.TOP | Gravity.START);
+        rowLp.leftMargin = dp(40);
+        rowLp.topMargin = dp(28);
+        overlay.addView(searchAiRow, rowLp);
+    }
+
+    private void askWawAi(String question) {
+        final AlertDialog loading = new AlertDialog.Builder(host).setTitle("WawAI").setMessage("Готовлю ответ…").setNegativeButton("Отмена", (d, w) -> d.dismiss()).create();
+        loading.show();
+        host.io.execute(() -> {
+            String answer = null, error = null;
+            HttpURLConnection connection = null;
+            try {
+                connection = (HttpURLConnection) new URL("https://forwaw-ai.ervin-mandarin.workers.dev/chat").openConnection();
+                connection.setRequestMethod("POST");
+                connection.setConnectTimeout(12000);
+                connection.setReadTimeout(45000);
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                JSONArray history = new JSONArray();
+                history.put(new JSONObject().put("role", "user").put("text", question));
+                JSONObject payload = new JSONObject();
+                payload.put("history", history);
+                payload.put("personalInstruction", "");
+                payload.put("reasoning", false);
+                payload.put("roleplay", false);
+                byte[] body = payload.toString().getBytes("UTF-8");
+                try (OutputStream out = connection.getOutputStream()) { out.write(body); }
+                int status = connection.getResponseCode();
+                InputStream stream = status >= 200 && status < 300 ? connection.getInputStream() : connection.getErrorStream();
+                StringBuilder response = new StringBuilder();
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) response.append(line);
+                }
+                JSONObject data = new JSONObject(response.toString());
+                if (status >= 200 && status < 300 && data.optBoolean("ok")) answer = data.optString("answer", "WawAI не вернул ответ.");
+                else error = data.optString("error", "Ошибка сервера (" + status + ").");
+            } catch (Exception e) {
+                error = "Не удалось связаться с WawAI. Проверь подключение к интернету.";
+            } finally {
+                if (connection != null) connection.disconnect();
+            }
+            final String result = answer, failure = error;
+            host.handler.post(() -> {
+                if (loading.isShowing()) loading.dismiss();
+                if (host.isFinishing()) return;
+                new AlertDialog.Builder(host).setTitle("WawAI").setMessage(result != null ? result : failure).setPositiveButton("Закрыть", null).show();
+            });
+        });
+    }
     private void buildTopBar() {
         LinearLayout topRightRow = new LinearLayout(host);
         topRightRow.setOrientation(LinearLayout.HORIZONTAL);
