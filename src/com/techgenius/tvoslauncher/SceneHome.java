@@ -244,6 +244,7 @@ final class SceneHome {
         searchGlass.lens = dp(5);
         searchGlass.rimStrength = 0.45f;
         systemSearchButton.setBackground(searchGlass);
+        systemSearchButton.setId(View.generateViewId());
         systemSearchButton.setFocusable(true);
         systemSearchButton.setClickable(true);
         systemSearchButton.setContentDescription("Поиск приложений и настроек");
@@ -269,7 +270,15 @@ final class SceneHome {
         wawAiInput.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         wawAiInput.setPadding(dp(16), 0, dp(16), 0);
         wawAiInput.setBackground(new MainActivity.LiquidGlass(dp(22), 0x6614161C, host.glassSource, host.screenW, host.screenH, host.unit));
+        wawAiInput.setId(View.generateViewId());
+        systemSearchButton.setNextFocusRightId(wawAiInput.getId());
+        wawAiInput.setNextFocusLeftId(systemSearchButton.getId());
         wawAiInput.setFocusable(true);
+        wawAiInput.setFocusableInTouchMode(true);
+        GradientDrawable inputFocusRing = new GradientDrawable();
+        inputFocusRing.setCornerRadius(dp(22));
+        inputFocusRing.setColor(Color.TRANSPARENT);
+        inputFocusRing.setStroke(dp(2), Color.WHITE);
         wawAiInput.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEND || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP)) {
                 String q = wawAiInput.getText().toString().trim();
@@ -278,7 +287,11 @@ final class SceneHome {
             }
             return false;
         });
-        wawAiInput.setOnFocusChangeListener((v, has) -> v.animate().scaleX(has ? 1.015f : 1f).scaleY(has ? 1.015f : 1f).setDuration(160).setInterpolator(MainActivity.LIFT).start());
+        wawAiInput.setOnFocusChangeListener((v, has) -> {
+            v.setForeground(has ? inputFocusRing : null);
+            v.animate().scaleX(has ? 1.015f : 1f).scaleY(has ? 1.015f : 1f)
+                    .setDuration(160).setInterpolator(MainActivity.LIFT).start();
+        });
         searchAiRow.addView(wawAiInput, new LinearLayout.LayoutParams(dp(310), controlSize));
         FrameLayout.LayoutParams rowLp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, controlSize, Gravity.TOP | Gravity.START);
         rowLp.leftMargin = dp(40);
