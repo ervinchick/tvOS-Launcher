@@ -1037,17 +1037,19 @@ public class SettingsActivity extends Activity {
                 () -> openSubMenu("home_dashboard"));
 
         section("ПАНЕЛЬ ПРИЛОЖЕНИЙ");
-        row("Положение дока",
-                () -> Scenes.dockPositionLabel(this),
-                () -> new AlertDialog.Builder(this)
-                        .setTitle("Положение дока")
-                        .setSingleChoiceItems(Scenes.dockPositionNames(), Scenes.dockPositionIndex(this), (dialog, which) -> {
-                            Scenes.setDockPosition(this, Scenes.dockPositionValue(which));
-                            dialog.dismiss();
-                            refreshAll();
-                        })
-                        .setNegativeButton("Отмена", null)
-                        .show());
+        if (scenesLook) {
+            row("Положение дока",
+                    () -> Scenes.dockPositionLabel(this),
+                    () -> new AlertDialog.Builder(this)
+                            .setTitle("Положение дока")
+                            .setSingleChoiceItems(Scenes.dockPositionNames(), Scenes.dockPositionIndex(this), (dialog, which) -> {
+                                Scenes.setDockPosition(this, Scenes.dockPositionValue(which));
+                                dialog.dismiss();
+                                refreshAll();
+                            })
+                            .setNegativeButton("Отмена", null)
+                            .show());
+        }
         row("Размер панели",
                 () -> Scenes.dockScaleLabel(this),
                 () -> openSubMenu("dock_size"));
