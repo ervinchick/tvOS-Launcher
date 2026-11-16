@@ -2636,11 +2636,12 @@ final class SceneHome {
             case 1: return "Тёмные";
             case 2: return "Тонированные";
             case 3: return "Светлые";
+            case 4: return "Градиентные";
             default: return "Оригинальные";
         }
     }
     static void cycleIconAppearance(Context c) {
-        Profiles.homePrefs(c).edit().putInt(KEY_ICON_APPEARANCE, (iconAppearance(c) + 1) % 4).apply();
+        Profiles.homePrefs(c).edit().putInt(KEY_ICON_APPEARANCE, (iconAppearance(c) + 1) % 5).apply();
     }
     private Bitmap applyIconAppearance(Bitmap source) {
         if (source == null || source.isRecycled()) return source;
@@ -2659,10 +2660,17 @@ final class SceneHome {
                 r = r * 0.62f + 10f; g = g * 0.62f + 8f; b = b * 0.68f + 20f;
             } else if (style == 2) {
                 r = gray * 0.60f + 112f; g = gray * 0.60f + 91f; b = gray * 0.60f + 178f;
-            } else {
+            } else if (style == 3) {
                 r = gray * 0.42f + r * 0.18f + 92f;
                 g = gray * 0.42f + g * 0.18f + 94f;
                 b = gray * 0.42f + b * 0.18f + 106f;
+            } else if (style == 4) {
+                // Premium black-to-original gradient: retain the app's own colors at the bottom.
+                float y = (i / w) / (float) Math.max(1, h - 1);
+                float shade = 0.20f + 0.80f * (y * y * (3f - 2f * y));
+                r *= shade;
+                g *= shade;
+                b *= shade;
             }
             pixels[i] = Color.argb(alpha, Math.min(255, (int) r), Math.min(255, (int) g), Math.min(255, (int) b));
         }
