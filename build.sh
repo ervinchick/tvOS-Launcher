@@ -23,7 +23,7 @@ rm -rf build && mkdir -p build/gen build/classes build/dex
 "$BT/aapt2" compile --dir res -o build/res.zip
 "$BT/aapt2" link -o build/unsigned.apk -I "$JAR" --manifest AndroidManifest.xml \
     -A assets --java build/gen --min-sdk-version 24 --target-sdk-version 34 \
-    --version-code "${VERSION_CODE:-16}" --version-name "${VERSION_NAME:-2.2.0}" build/res.zip
+    --version-code "${VERSION_CODE:-17}" --version-name "${VERSION_NAME:-1.0.0}" build/res.zip
 
 javac -encoding UTF-8 --release 11 -classpath "$JAR" \
     -d build/classes $(find src build/gen -name '*.java')
@@ -44,7 +44,7 @@ else
     KS=debug.keystore
     if [ ! -f "$KS" ]; then
         keytool -genkeypair -keystore "$KS" -storepass android -keypass android -alias debug \
-            -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=tvOS Launcher debug" >/dev/null
+            -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Wawid TV debug" >/dev/null
     fi
     "$BT/apksigner" sign --ks "$KS" --ks-pass pass:android --key-pass pass:android \
         --out build/tvos-home.apk build/aligned.apk
