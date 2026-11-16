@@ -68,6 +68,7 @@ final class SceneHome {
     final List<WatchPopup> watchPopups = new ArrayList<>();
 
     LinearLayout whoBar;
+    TextView homeGreeting;
     LinearLayout searchAiRow;
     ImageView systemSearchButton;
     EditText wawAiInput;
@@ -163,6 +164,7 @@ final class SceneHome {
         this.overlay.setClipToPadding(false);
 
         buildTopBar();
+        buildHomeGreeting();
         buildSearchAiBar();
         buildKeepWatchingShelf();
         buildDashboardBox();
@@ -229,6 +231,30 @@ final class SceneHome {
     }
 
     // ---------------------------------------------------------------- Top Bar (Profile pill & Control Panel in top-right)
+
+    private void buildHomeGreeting() {
+        homeGreeting = new TextView(host);
+        Ui.textSize(homeGreeting, 16f);
+        homeGreeting.setTypeface(Ui.font(host, "semibold"));
+        homeGreeting.setTextColor(0xFFF4F1FA);
+        homeGreeting.setShadowLayer(dp(7), 0, dp(2), 0x99000000);
+        homeGreeting.setSingleLine(true);
+        homeGreeting.setEllipsize(TextUtils.TruncateAt.END);
+        homeGreeting.setText(Scenes.getHomeGreeting(host));
+        homeGreeting.setVisibility(homeGreeting.getText().length() == 0 ? View.GONE : View.VISIBLE);
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                dp(420), dp(28), Gravity.TOP | Gravity.START);
+        lp.leftMargin = dp(40);
+        lp.topMargin = dp(78);
+        overlay.addView(homeGreeting, lp);
+    }
+
+    void refreshHomeGreeting() {
+        if (homeGreeting == null) return;
+        String value = Scenes.getHomeGreeting(host);
+        homeGreeting.setText(value);
+        homeGreeting.setVisibility(value.isEmpty() ? View.GONE : View.VISIBLE);
+    }
 
     private void buildSearchAiBar() {
         searchAiRow = new LinearLayout(host);
