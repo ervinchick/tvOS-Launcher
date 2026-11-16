@@ -1016,6 +1016,12 @@ public class SettingsActivity extends Activity {
                     Scenes.setDockNamesShown(this, !Scenes.isDockNamesShown(this));
                     refreshAll();
                 });
+        row("Стиль иконок",
+                () -> SceneHome.iconAppearanceLabel(this),
+                () -> {
+                    SceneHome.cycleIconAppearance(this);
+                    refreshAll();
+                });
 
         if (scenesLook) {
             section(tr("NIGHT SCENES CLOCK", "GECE SAHNELERİ SAATİ"));
