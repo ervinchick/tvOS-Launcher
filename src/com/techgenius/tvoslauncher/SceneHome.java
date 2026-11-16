@@ -2046,9 +2046,10 @@ final class SceneHome {
                 focusedDockIdx = index;
                 host.prefs.edit().putInt("last_dock_idx", index).apply();
                 if (moveDockIdx >= 0) {
+                    boolean sideDock = Scenes.isSideDockPosition(host);
                     updateDockTooltip(v, I18n.s(host,
-                            "Move " + a.label + "  ·  Left/Right, OK when done",
-                            a.label + " taşınıyor  ·  Sol/Sağ, bitince OK"));
+                            "Move " + a.label + "  ·  " + (sideDock ? "Up/Down" : "Left/Right") + ", OK when done",
+                            a.label + " taşınıyor  ·  " + (sideDock ? "Yukarı/Aşağı" : "Sol/Sağ") + ", bitince OK"));
                 } else {
                     updateDockTooltip(v, a.label);
                 }
@@ -3417,19 +3418,20 @@ final class SceneHome {
         }
 
         if (moveDockIdx >= 0) {
+            boolean sideDock = Scenes.isSideDockPosition(host);
             int cols = Math.max(1, currentDockCols);
             switch (k) {
                 case KeyEvent.KEYCODE_DPAD_LEFT:
-                    if (down) moveDockBy(-1);
+                    if (down && !sideDock) moveDockBy(-1);
                     return true;
                 case KeyEvent.KEYCODE_DPAD_RIGHT:
-                    if (down) moveDockBy(1);
+                    if (down && !sideDock) moveDockBy(1);
                     return true;
                 case KeyEvent.KEYCODE_DPAD_UP:
-                    if (down) moveDockBy(-cols);
+                    if (down) moveDockBy(sideDock ? -1 : -cols);
                     return true;
                 case KeyEvent.KEYCODE_DPAD_DOWN:
-                    if (down) moveDockBy(cols);
+                    if (down) moveDockBy(sideDock ? 1 : cols);
                     return true;
                 case KeyEvent.KEYCODE_DPAD_CENTER:
                 case KeyEvent.KEYCODE_ENTER:
@@ -3568,10 +3570,34 @@ final class SceneHome {
             }
         }
 
-        // Bottom Dock navigation
+        // Dock navigation adapts to the selected edge: side docks are a vertical list.
         int dIdx = dockTiles.indexOf(f);
         if (dIdx >= 0) {
             int cols = Math.max(1, currentDockCols);
+            if (Scenes.isSideDockPosition(host)) {
+                if (k == KeyEvent.KEYCODE_DPAD_UP) {
+                    if (down) {
+                        if (focusWatchPopupRow(f)) return true;
+                        if (dIdx > 0) focusDock(dIdx - 1);
+                        else moonBtn.requestFocus();
+                    }
+                    return true;
+                }
+                if (k == KeyEvent.KEYCODE_DPAD_DOWN) {
+                    if (down && dIdx + 1 < dockTiles.size()) focusDock(dIdx + 1);
+                    return true;
+                }
+                if (k == KeyEvent.KEYCODE_DPAD_LEFT || k == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                    boolean inward = ("left".equals(Scenes.getDockPosition(host)) && k == KeyEvent.KEYCODE_DPAD_RIGHT)
+                            || ("right".equals(Scenes.getDockPosition(host)) && k == KeyEvent.KEYCODE_DPAD_LEFT);
+                    if (down && inward) {
+                        if (isDashboardShowing() && !dashboardCards.isEmpty()) dashboardCards.get(0).requestFocus();
+                        else if (shelfBox.getVisibility() == View.VISIBLE && !shelfCards.isEmpty()) shelfCards.get(0).requestFocus();
+                        else if (wawAiInput != null) wawAiInput.requestFocus();
+                    }
+                    return true;
+                }
+            }
             if (k == KeyEvent.KEYCODE_DPAD_LEFT) {
                 if (down && dIdx > 0) focusDock(dIdx - 1);
                 return true;
