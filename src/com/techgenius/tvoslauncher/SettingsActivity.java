@@ -1147,7 +1147,7 @@ public class SettingsActivity extends Activity {
                         () -> CustomMedia.getCustomWallpaperModeLabel(this, CustomMedia.SCOPE_CLASSIC),
                         () -> openSubMenu("custom_wall:" + CustomMedia.SCOPE_CLASSIC));
             } else {
-                section(tr("CLASSIC BACKGROUND", "KLASİK ARKA PLAN"));
+                section("КЛАССИЧЕСКИЕ ОБОИ");
                 String curWall = Profiles.homePrefs(this).getString("wallpaper", "photo:tessellated-pavement.jpg");
                 for (int i = 0; i < Scenes.CLASSIC_PHOTOS.length; i++) {
                     final String photoFile = Scenes.CLASSIC_PHOTOS[i][0];
@@ -1158,7 +1158,7 @@ public class SettingsActivity extends Activity {
                         rebuildMainRows();
                     });
                 }
-                row(tr("Ambient colour themes…", "Ortam renk temaları…"), () -> {
+                row("Цветовые темы…", () -> {
                     String k = Profiles.homePrefs(this).getString("wallpaper", "photo:tessellated-pavement.jpg");
                     int idx = Arrays.asList(MainActivity.WALL_KEYS).indexOf(k);
                     return MainActivity.wallName(this, Math.max(0, idx));
