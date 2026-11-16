@@ -1030,10 +1030,15 @@ public class SettingsActivity extends Activity {
                 });
         row("Стиль иконок",
                 () -> SceneHome.iconAppearanceLabel(this),
-                () -> {
-                    SceneHome.cycleIconAppearance(this);
-                    refreshAll();
-                });
+                () -> new AlertDialog.Builder(this)
+                        .setTitle("Стиль иконок")
+                        .setSingleChoiceItems(SceneHome.iconAppearanceNames(), SceneHome.iconAppearance(this), (dialog, which) -> {
+                            SceneHome.setIconAppearance(this, which);
+                            dialog.dismiss();
+                            refreshAll();
+                        })
+                        .setNegativeButton("Отмена", null)
+                        .show());
 
         if (scenesLook) {
             section("ЧАСЫ НОЧНЫХ СЦЕН");
