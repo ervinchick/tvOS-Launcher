@@ -2630,14 +2630,15 @@ final class SceneHome {
 
 
     private static final String KEY_ICON_APPEARANCE = "wawid_icon_appearance";
-    static int iconAppearance(Context c) { return Profiles.homePrefs(c).getInt(KEY_ICON_APPEARANCE, 0); }
+    static int iconAppearance(Context c) { return Profiles.homePrefs(c).getInt(KEY_ICON_APPEARANCE, 4); }
     static String iconAppearanceLabel(Context c) {
         switch (iconAppearance(c)) {
             case 1: return "Тёмные";
             case 2: return "Тонированные";
             case 3: return "Светлые";
+            case 0: return "Оригинальные";
             case 4: return "Градиентные";
-            default: return "Оригинальные";
+            default: return "Градиентные";
         }
     }
     static void cycleIconAppearance(Context c) {
@@ -2667,7 +2668,7 @@ final class SceneHome {
             } else if (style == 4) {
                 // Premium black-to-original gradient: retain the app's own colors at the bottom.
                 float y = (i / w) / (float) Math.max(1, h - 1);
-                float shade = 0.20f + 0.80f * (y * y * (3f - 2f * y));
+                float shade = 0.06f + 0.94f * (y * y * (3f - 2f * y));
                 r *= shade;
                 g *= shade;
                 b *= shade;
