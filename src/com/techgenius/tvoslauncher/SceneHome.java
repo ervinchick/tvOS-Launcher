@@ -1777,11 +1777,11 @@ final class SceneHome {
         final android.graphics.BitmapShader shader = new android.graphics.BitmapShader(
                 bmp, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         paint.setShader(shader);
-        final Paint bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        final Paint bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
         bgPaint.setStyle(Paint.Style.FILL);
-        bgPaint.setColor(bgColor);
         final android.graphics.Matrix matrix = new android.graphics.Matrix();
         final RectF dstRect = new RectF();
+        final RectF iconRect = new RectF();
         return new Drawable() {
             @Override
             protected void onBoundsChange(Rect bounds) {
@@ -1791,24 +1791,29 @@ final class SceneHome {
                 float vh = bounds.height();
                 float bw = bmp.getWidth();
                 float bh = bmp.getHeight();
+                float inset = Math.max(1f, Math.min(vw, vh) * 0.045f);
+                iconRect.set(dstRect.left + inset, dstRect.top + inset,
+                        dstRect.right - inset, dstRect.bottom - inset);
                 if (vw > 0 && vh > 0 && bw > 0 && bh > 0) {
-                    float scale = Math.max(vw / bw, vh / bh) * zoom;
-                    float dx = bounds.left + (vw - bw * scale) * 0.5f;
-                    float dy = bounds.top + (vh - bh * scale) * 0.5f;
+                    float scale = Math.max(iconRect.width() / bw, iconRect.height() / bh) * zoom;
+                    float dx = iconRect.left + (iconRect.width() - bw * scale) * 0.5f;
+                    float dy = iconRect.top + (iconRect.height() - bh * scale) * 0.5f;
                     matrix.reset();
                     matrix.setScale(scale, scale);
                     matrix.postTranslate(dx, dy);
                     shader.setLocalMatrix(matrix);
                 }
+                bgPaint.setShader(new LinearGradient(0f, dstRect.top, 0f, dstRect.bottom,
+                        new int[]{0xFF080A11, bgColor == 0 ? 0xFF252638 : bgColor},
+                        null, Shader.TileMode.CLAMP));
             }
 
             @Override
             public void draw(Canvas canvas) {
                 if (dstRect.isEmpty()) return;
-                if (bgColor != 0) {
-                    canvas.drawRoundRect(dstRect, cornerRadiusPx, cornerRadiusPx, bgPaint);
-                }
-                canvas.drawRoundRect(dstRect, cornerRadiusPx, cornerRadiusPx, paint);
+                canvas.drawRoundRect(dstRect, cornerRadiusPx, cornerRadiusPx, bgPaint);
+                float innerRadius = Math.max(1f, cornerRadiusPx - Math.min(dstRect.width(), dstRect.height()) * 0.045f);
+                canvas.drawRoundRect(iconRect, innerRadius, innerRadius, paint);
             }
 
             @Override
@@ -1820,6 +1825,7 @@ final class SceneHome {
             @Override
             public void setColorFilter(android.graphics.ColorFilter colorFilter) {
                 paint.setColorFilter(colorFilter);
+                bgPaint.setColorFilter(colorFilter);
             }
 
             @Override
@@ -2043,17 +2049,16 @@ final class SceneHome {
         } else {
             boolean hasCustom = CustomMedia.hasCustomAppIcon(host, a.key, a.pkg);
             Bitmap sq = getSquareAppIcon(a);
-            int baseBg = (hasCustom || getSquareAppLogo(a.pkg) != null)
-                    ? 0xFF141519 : (a.color != 0 ? a.color : 0xFF1A1C22);
+            int baseBg = a.color != 0 ? a.color : 0xFF252638;
             if (sq != null) {
                 whiteCorners = hasWhiteCorners(sq);
                 float z = hasCustom ? 1.0f : 1.05f;
                 tile.setBackground(createSmoothSquircleDrawable(sq, rad, z, baseBg));
                 tile.setClipToOutline(false);
             } else {
-                GradientDrawable bg = new GradientDrawable();
+                GradientDrawable bg = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                        new int[]{0xFF080A11, baseBg});
                 bg.setCornerRadius(rad);
-                bg.setColor(baseBg);
                 tile.setBackground(bg);
                 tile.setOutlineProvider(host.roundedOutline(new float[]{rad}));
                 tile.setClipToOutline(true);
@@ -2077,9 +2082,12 @@ final class SceneHome {
             ImageView iv = new ImageView(host);
             iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
             iv.setImageDrawable(a.icon);
-            iv.setScaleX(1.05f);
-            iv.setScaleY(1.05f);
-            tile.addView(iv, host.match());
+            iv.setScaleX(1.02f);
+            iv.setScaleY(1.02f);
+            FrameLayout.LayoutParams iconLp = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            iconLp.setMargins(dp(4), dp(4), dp(4), dp(4));
+            tile.addView(iv, iconLp);
         }
 
         Drawable focusRing = createIconFocusRingDrawable(rad, dp(2.2f), whiteCorners);
@@ -2401,15 +2409,14 @@ final class SceneHome {
             final FrameLayout iconBox = new FrameLayout(host);
             boolean hasCustom = CustomMedia.hasCustomAppIcon(host, app.key, app.pkg);
             Bitmap sq = getSquareAppIcon(app);
-            int baseBg = (hasCustom || getSquareAppLogo(app.pkg) != null)
-                    ? 0xFF141519 : (app.color != 0 ? app.color : 0xFF1A1C22);
+            int baseBg = app.color != 0 ? app.color : 0xFF252638;
             if (sq != null) {
                 float z = hasCustom ? 1.0f : 1.05f;
                 iconBox.setBackground(createSmoothSquircleDrawable(sq, iconRad, z, baseBg));
             } else {
-                GradientDrawable ibg = new GradientDrawable();
+                GradientDrawable ibg = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                        new int[]{0xFF080A11, baseBg});
                 ibg.setCornerRadius(iconRad);
-                ibg.setColor(baseBg);
                 iconBox.setBackground(ibg);
                 iconBox.setOutlineProvider(host.roundedOutline(new float[]{iconRad}));
                 iconBox.setClipToOutline(true);
@@ -2417,9 +2424,12 @@ final class SceneHome {
                     ImageView iv = new ImageView(host);
                     iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     iv.setImageDrawable(app.icon);
-                    iv.setScaleX(1.05f);
-                    iv.setScaleY(1.05f);
-                    iconBox.addView(iv, host.match());
+                    iv.setScaleX(1.02f);
+                    iv.setScaleY(1.02f);
+                    FrameLayout.LayoutParams iconLp = new FrameLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    iconLp.setMargins(dp(4), dp(4), dp(4), dp(4));
+                    iconBox.addView(iv, iconLp);
                 }
             }
             final Drawable focusRing = createIconFocusRingDrawable(iconRad, dp(2.2f), sq != null && hasWhiteCorners(sq));
