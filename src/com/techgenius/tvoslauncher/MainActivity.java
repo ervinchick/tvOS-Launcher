@@ -906,6 +906,7 @@ public class MainActivity extends Activity {
         wlp.leftMargin = dockOuter;
         root.addView(weatherCard, wlp);
         root.addView(sceneHome.overlay, match());
+        sceneHome.attachHomeGreetingToRoot();
         sceneHome.attachSearchAiBarToRoot();
 
         launchDimView = new View(this) {
