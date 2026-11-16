@@ -1406,12 +1406,12 @@ public class MainActivity extends Activity {
         } else if (spotify) {                            // Spotify: inverted dark background + green logo
             top = 0xFF1E1E22;
             bottom = 0xFF121214;
-        } else {                                         // vivid gradient in the app's own hue
+        } else {                                         // Wawid card: near-black top, app colour rising at the bottom
             float[] hsv = new float[3];
             Color.colorToHSV(e.color, hsv);
-            float sat = hsv[1] < 0.15f ? 0.12f : 0.7f;   // greys stay neutral
-            top = Color.HSVToColor(new float[]{hsv[0], sat * 0.85f, 0.92f});
-            bottom = Color.HSVToColor(new float[]{(hsv[0] + 8f) % 360f, Math.min(1f, sat * 1.15f), sat < 0.2f ? 0.42f : 0.68f});
+            float sat = hsv[1] < 0.15f ? 0.10f : Math.min(0.82f, Math.max(0.42f, hsv[1] * 0.88f));
+            top = Color.HSVToColor(new float[]{hsv[0], sat * 0.62f, 0.105f});
+            bottom = Color.HSVToColor(new float[]{hsv[0], sat, hsv[1] < 0.15f ? 0.46f : 0.66f});
         }
         p.setShader(new LinearGradient(0, 0, 0, h, top, bottom, Shader.TileMode.CLAMP));
         c.drawRect(0, 0, w, h, p);
