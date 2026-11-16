@@ -1032,23 +1032,6 @@ public class SettingsActivity extends Activity {
                             .setNegativeButton("Отмена", null)
                             .show();
                 });
-        row("Положение приветствия",
-                () -> {
-                    String position = Scenes.getHomeGreetingPosition(this);
-                    return "center".equals(position) ? "По центру" : ("right".equals(position) ? "Справа" : "Слева");
-                },
-                () -> new AlertDialog.Builder(this)
-                        .setTitle("Положение приветствия")
-                        .setSingleChoiceItems(new String[]{"Слева", "По центру", "Справа"},
-                                "left".equals(Scenes.getHomeGreetingPosition(this)) ? 0
-                                        : ("center".equals(Scenes.getHomeGreetingPosition(this)) ? 1 : 2),
-                                (dialog, which) -> {
-                                    Scenes.setHomeGreetingPosition(this, which == 1 ? "center" : (which == 2 ? "right" : "left"));
-                                    dialog.dismiss();
-                                    refreshAll();
-                                })
-                        .setNegativeButton("Отмена", null)
-                        .show());
         row("Настройки виджетов",
                 () -> (HomeDashboard.isEnabled(this) ? "Включено" : "Выключено") + "  ›",
                 () -> openSubMenu("home_dashboard"));
@@ -1080,6 +1063,19 @@ public class SettingsActivity extends Activity {
                     Scenes.setDockNamesShown(this, !Scenes.isDockNamesShown(this));
                     refreshAll();
                 });
+        row("Вид карточек приложений",
+                () -> SceneHome.cardAppearanceLabel(this),
+                () -> new AlertDialog.Builder(this)
+                        .setTitle("Вид карточек приложений")
+                        .setSingleChoiceItems(new String[]{"Классический", "Градиентный"},
+                                SceneHome.isGradientCardAppearance(this) ? 1 : 0,
+                                (dialog, which) -> {
+                                    SceneHome.setGradientCardAppearance(this, which == 1);
+                                    dialog.dismiss();
+                                    refreshAll();
+                                })
+                        .setNegativeButton("Отмена", null)
+                        .show());
         row("Стиль иконок",
                 () -> SceneHome.iconAppearanceLabel(this),
                 () -> new AlertDialog.Builder(this)
