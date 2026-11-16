@@ -250,8 +250,11 @@ final class SceneHome {
         homeGreeting.setGravity(Gravity.CENTER);
         ViewGroup.LayoutParams params = homeGreeting.getLayoutParams();
         if (params != null) {
-            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             params.height = dp(28);
+            if (params instanceof LinearLayout.LayoutParams) {
+                ((LinearLayout.LayoutParams) params).gravity = Gravity.CENTER_HORIZONTAL;
+            }
             homeGreeting.setLayoutParams(params);
         }
     }
@@ -1548,7 +1551,8 @@ final class SceneHome {
 
         if (homeGreeting != null) {
             LinearLayout.LayoutParams greetingLp = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, dp(28));
+                    ViewGroup.LayoutParams.WRAP_CONTENT, dp(28));
+            greetingLp.gravity = Gravity.CENTER_HORIZONTAL;
             greetingLp.bottomMargin = dp(7);
             dockContainer.addView(homeGreeting, greetingLp);
             applyHomeGreetingLayout();
