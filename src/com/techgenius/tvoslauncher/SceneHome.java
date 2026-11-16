@@ -46,6 +46,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Couch-TV "Night scenes" Home Screen layout and interactions:
@@ -298,7 +299,16 @@ final class SceneHome {
     }
 
     private void askWawAi(String question) {
-        final AlertDialog loading = new AlertDialog.Builder(host).setTitle("WawAI").setMessage("Готовлю ответ…").setNegativeButton("Отмена", (d, w) -> d.dismiss()).create();
+        final AtomicBoolean cancelled = new AtomicBoolean(false);
+        final AlertDialog loading = new AlertDialog.Builder(host)
+                .setTitle("WawAI")
+                .setMessage("Готовлю ответ…")
+                .setNegativeButton("Отмена", (d, w) -> {
+                    cancelled.set(true);
+                    d.dismiss();
+                })
+                .create();
+        loading.setOnCancelListener(d -> cancelled.set(true));
         loading.show();
         host.io.execute(() -> {
             String answer = null, error = null;
@@ -336,8 +346,8 @@ final class SceneHome {
             }
             final String result = answer, failure = error;
             host.handler.post(() -> {
+                if (cancelled.get() || host.isFinishing() || host.isDestroyed()) return;
                 if (loading.isShowing()) loading.dismiss();
-                if (host.isFinishing()) return;
                 new AlertDialog.Builder(host).setTitle("WawAI").setMessage(result != null ? result : failure).setPositiveButton("Закрыть", null).show();
             });
         });
