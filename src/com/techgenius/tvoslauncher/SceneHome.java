@@ -334,7 +334,15 @@ final class SceneHome {
                 connection.setDoOutput(true);
                 connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
                 JSONArray history = new JSONArray();
+                try {
+                    JSONArray saved = new JSONArray(Profiles.homePrefs(host).getString("wawai_home_history", "[]"));
+                    for (int i = Math.max(0, saved.length() - 11); i < saved.length(); i++) {
+                        JSONObject item = saved.optJSONObject(i);
+                        if (item != null) history.put(item);
+                    }
+                } catch (Exception ignored) { }
                 history.put(new JSONObject().put("role", "user").put("text", question));
+                while (history.length() > 12) history.remove(0);
                 JSONObject payload = new JSONObject();
                 payload.put("history", history);
                 payload.put("personalInstruction", "");
@@ -350,8 +358,12 @@ final class SceneHome {
                     while ((line = reader.readLine()) != null) response.append(line);
                 }
                 JSONObject data = new JSONObject(response.toString());
-                if (status >= 200 && status < 300 && data.optBoolean("ok")) answer = data.optString("answer", "WawAI не вернул ответ.");
-                else error = data.optString("error", "Ошибка сервера (" + status + ").");
+                if (status >= 200 && status < 300 && data.optBoolean("ok")) {
+                    answer = data.optString("answer", "WawAI не вернул ответ.");
+                    history.put(new JSONObject().put("role", "assistant").put("text", answer));
+                    while (history.length() > 12) history.remove(0);
+                    Profiles.homePrefs(host).edit().putString("wawai_home_history", history.toString()).apply();
+                } else error = data.optString("error", "Ошибка сервера (" + status + ").");
             } catch (Exception e) {
                 error = "Не удалось связаться с WawAI. Проверь подключение к интернету.";
             } finally {
@@ -361,7 +373,10 @@ final class SceneHome {
             host.handler.post(() -> {
                 if (cancelled.get() || host.isFinishing() || host.isDestroyed()) return;
                 if (loading.isShowing()) loading.dismiss();
-                new AlertDialog.Builder(host).setTitle("WawAI").setMessage(result != null ? result : failure).setPositiveButton("Закрыть", null).show();
+                new AlertDialog.Builder(host).setTitle("WawAI").setMessage(result != null ? result : failure)
+                        .setNeutralButton("Сбросить контекст", (d, w) ->
+                                Profiles.homePrefs(host).edit().remove("wawai_home_history").apply())
+                        .setPositiveButton("Закрыть", null).show();
             });
         });
     }
@@ -2638,11 +2653,12 @@ final class SceneHome {
             case 3: return "Светлые";
             case 0: return "Оригинальные";
             case 4: return "Градиентные";
+            case 5: return "Космические";
             default: return "Градиентные";
         }
     }
     static void cycleIconAppearance(Context c) {
-        Profiles.homePrefs(c).edit().putInt(KEY_ICON_APPEARANCE, (iconAppearance(c) + 1) % 5).apply();
+        Profiles.homePrefs(c).edit().putInt(KEY_ICON_APPEARANCE, (iconAppearance(c) + 1) % 6).apply();
     }
     private Bitmap applyIconAppearance(Bitmap source) {
         if (source == null || source.isRecycled()) return source;
@@ -2672,6 +2688,15 @@ final class SceneHome {
                 r *= shade;
                 g *= shade;
                 b *= shade;
+            } else if (style == 5) {
+                // Cosmic finish: deep indigo at the top, original app color emerging below.
+                float y = (i / w) / (float) Math.max(1, h - 1);
+                float reveal = y * y * (3f - 2f * y);
+                float shade = 0.16f + 0.84f * reveal;
+                float violet = (1f - reveal) * 0.42f;
+                r = r * shade + 78f * violet;
+                g = g * shade + 48f * violet;
+                b = b * shade + 142f * violet;
             }
             pixels[i] = Color.argb(alpha, Math.min(255, (int) r), Math.min(255, (int) g), Math.min(255, (int) b));
         }
