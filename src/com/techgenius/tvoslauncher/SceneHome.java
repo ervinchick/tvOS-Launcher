@@ -2477,18 +2477,60 @@ final class SceneHome {
         if (a.pkg != null) logoCache.remove(a.pkg);
     }
 
+
+    private static final String KEY_ICON_APPEARANCE = "wawid_icon_appearance";
+    static int iconAppearance(Context c) { return Profiles.homePrefs(c).getInt(KEY_ICON_APPEARANCE, 0); }
+    static String iconAppearanceLabel(Context c) {
+        switch (iconAppearance(c)) {
+            case 1: return "Тёмные";
+            case 2: return "Тонированные";
+            case 3: return "Светлые";
+            default: return "Оригинальные";
+        }
+    }
+    static void cycleIconAppearance(Context c) {
+        Profiles.homePrefs(c).edit().putInt(KEY_ICON_APPEARANCE, (iconAppearance(c) + 1) % 4).apply();
+    }
+    private Bitmap applyIconAppearance(Bitmap source) {
+        if (source == null || source.isRecycled()) return source;
+        int style = iconAppearance(host);
+        if (style == 0) return source;
+        int w = source.getWidth(), h = source.getHeight();
+        Bitmap out = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        int[] pixels = new int[w * h];
+        source.getPixels(pixels, 0, w, 0, 0, w, h);
+        for (int i = 0; i < pixels.length; i++) {
+            int color = pixels[i], alpha = Color.alpha(color);
+            if (alpha == 0) continue;
+            float r = Color.red(color), g = Color.green(color), b = Color.blue(color);
+            float gray = 0.2126f * r + 0.7152f * g + 0.0722f * b;
+            if (style == 1) {
+                r = r * 0.62f + 10f; g = g * 0.62f + 8f; b = b * 0.68f + 20f;
+            } else if (style == 2) {
+                r = gray * 0.60f + 112f; g = gray * 0.60f + 91f; b = gray * 0.60f + 178f;
+            } else {
+                r = gray * 0.42f + r * 0.18f + 92f;
+                g = gray * 0.42f + g * 0.18f + 94f;
+                b = gray * 0.42f + b * 0.18f + 106f;
+            }
+            pixels[i] = Color.argb(alpha, Math.min(255, (int) r), Math.min(255, (int) g), Math.min(255, (int) b));
+        }
+        out.setPixels(pixels, 0, w, 0, 0, w, h);
+        return out;
+    }
+
     Bitmap getSquareAppIcon(MainActivity.AppEntry a) {
         if (a == null) return null;
         if (CustomMedia.hasCustomAppIcon(host, a.key, a.pkg)) {
             Bitmap custom = CustomMedia.getCustomAppIcon(host, a.key, a.pkg);
             if (custom != null && !custom.isRecycled()) {
-                if ((custom.getPixel(0, 0) >>> 24) == 255) {
-                    return Bitmap.createScaledBitmap(custom, 384, 384, true);
-                }
-                return CustomMedia.prepareFullBleedAppIcon(custom, 384, 384);
+                Bitmap prepared = (custom.getPixel(0, 0) >>> 24) == 255
+                        ? Bitmap.createScaledBitmap(custom, 384, 384, true)
+                        : CustomMedia.prepareFullBleedAppIcon(custom, 384, 384);
+                return applyIconAppearance(prepared);
             }
         }
-        String cacheKey = a.key != null ? a.key : a.pkg;
+        String cacheKey = (a.key != null ? a.key : a.pkg) + "#appearance-" + iconAppearance(host);
         if (cacheKey != null && logoCache.containsKey(cacheKey)) {
             return logoCache.get(cacheKey);
         }
@@ -2496,6 +2538,7 @@ final class SceneHome {
         if (bmp == null) {
             bmp = buildFullSquareIcon(a);
         }
+        bmp = applyIconAppearance(bmp);
         if (cacheKey != null) {
             logoCache.put(cacheKey, bmp);
         }
