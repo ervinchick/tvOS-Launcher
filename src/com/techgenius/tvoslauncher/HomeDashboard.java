@@ -1270,8 +1270,8 @@ public final class HomeDashboard {
             if (wid.equals(sMovingWidgetId)) {
                 GradientDrawable moveRing = new GradientDrawable();
                 moveRing.setCornerRadius(dp(host, 15));
-                moveRing.setColor(0x2238BDF8);
-                moveRing.setStroke(dp(host, 2), 0xFF38BDF8);
+                moveRing.setColor(0x228057E8);
+                moveRing.setStroke(dp(host, 2), 0xFFB58AFF);
                 card.setForeground(moveRing);
                 android.animation.ObjectAnimator wig = android.animation.ObjectAnimator.ofFloat(card, View.ROTATION, -1.5f, 1.5f);
                 wig.setDuration(130);
@@ -1433,7 +1433,7 @@ public final class HomeDashboard {
         final GradientDrawable focusRing = new GradientDrawable();
         focusRing.setCornerRadius(r);
         focusRing.setColor(Color.TRANSPARENT);
-        focusRing.setStroke(dp(host, 2), Color.WHITE);
+        focusRing.setStroke(dp(host, 2), 0xFFE0C7FF);
 
         card.setFocusable(true);
         card.setFocusableInTouchMode(false);
@@ -1606,7 +1606,7 @@ public final class HomeDashboard {
     // WIDGET 2: FOOTBALL MATCHES CARD (WITH CLUB LOGOS & LIVE SCORES)
     // -------------------------------------------------------------------------
     private static View createFootballWidgetCard(final MainActivity host) {
-        final FrameLayout card = createBaseGlassCard(host, 0xFF38BDF8);
+        final FrameLayout card = createBaseGlassCard(host, 0xFFB58AFF);
         LinearLayout col = new LinearLayout(host);
         col.setOrientation(LinearLayout.VERTICAL);
 
