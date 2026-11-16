@@ -358,7 +358,7 @@ public class SettingsActivity extends Activity {
                 ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
 
         msgView = new TextView(this);
-        msgView.setTextColor(0xFF8FD3FF);
+        msgView.setTextColor(0xFFD9C7FF);
         msgView.setTypeface(Ui.font(this, "medium"));
         Ui.textSize(msgView, 11.5f);
         msgView.setSingleLine(true);
@@ -366,7 +366,7 @@ public class SettingsActivity extends Activity {
         GradientDrawable msgBg = new GradientDrawable();
         msgBg.setCornerRadius(u(11));
         msgBg.setColor(0xD8181A24);
-        msgBg.setStroke(Math.max(1, u(1)), 0x338FD3FF);
+        msgBg.setStroke(Math.max(1, u(1)), 0x557650D8);
         msgView.setBackground(msgBg);
         msgView.setPaddingRelative(u(14), u(6), u(14), u(6));
         LinearLayout.LayoutParams msgLp = new LinearLayout.LayoutParams(
@@ -653,15 +653,15 @@ public class SettingsActivity extends Activity {
             TextView label = sideLabels.get(key);
 
             if (focused) {
-                pillBg.setColor(Color.WHITE);
-                iconBg.setColor(0x14000000);
-                iconIv.setImageBitmap(Glyphs.get(glyph, iconGlyphSz, 0xFF111114));
-                label.setTextColor(0xFF111114);
-            } else if (active) {
-                pillBg.setColor(0x22FFFFFF); // .ssec.on: rgba(255,255,255,0.13)
-                iconBg.setColor(0x1AFFFFFF);
+                pillBg.setColor(0xFF7650D8);
+                iconBg.setColor(0x33251A46);
                 iconIv.setImageBitmap(Glyphs.get(glyph, iconGlyphSz, Color.WHITE));
                 label.setTextColor(Color.WHITE);
+            } else if (active) {
+                pillBg.setColor(0x447650D8);
+                iconBg.setColor(0x337650D8);
+                iconIv.setImageBitmap(Glyphs.get(glyph, iconGlyphSz, Color.WHITE));
+                label.setTextColor(0xFFF2ECFF);
             } else {
                 pillBg.setColor(Color.TRANSPARENT);
                 iconBg.setColor(0x1AFFFFFF);
