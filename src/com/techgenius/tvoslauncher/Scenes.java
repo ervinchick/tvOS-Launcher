@@ -412,7 +412,11 @@ public final class Scenes {
 
     public static void setHomeGreeting(Context c, String greeting) {
         if (c == null) return;
-        String value = greeting == null ? "" : greeting.trim();
+        if (greeting == null) {
+            prefs(c).edit().remove(greetingKey(c)).apply();
+            return;
+        }
+        String value = greeting.trim();
         if (value.length() > 64) value = value.substring(0, 64);
         prefs(c).edit().putString(greetingKey(c), value).apply();
     }
