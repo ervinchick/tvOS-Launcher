@@ -1,226 +1,39 @@
-# tvOS Launcher (`v2.2.0`)
+# Wawid TV
 
-> 🇹🇷 **Türkçe dokümantasyon ve kurulum rehberi için:** **[README_TR.md (Türkçe)](README_TR.md)**  
-> 📦 **Download Latest APK (`v2.2.0`):** **[GitHub Releases](https://github.com/techgenius1/tvOS-Launcher/releases/latest)**
+**Премиальный домашний экран для Android TV и Google TV.**
 
-![tvOS Launcher Header](screenshots_en/Header_EN.jpg)
+Wawid TV — независимая переработка открытого проекта [tvOS-Launcher](https://github.com/techgenius1/tvOS-Launcher). Проект развивается под брендом **Wawid Studios**: русскоязычный интерфейс, спокойная визуальная система, плавные переходы и удобное управление с пульта.
 
-A fast, lightweight, tvOS 26 & macOS–inspired home screen for Android TV & Google TV — built in pure Java with zero third-party runtime dependencies (**~5.7 MB APK, ~30 MB private RAM / ~38 MB total PSS, `0.0%` background CPU**). Designed to stay buttery-smooth even on 1 GB RAM TV boxes while bringing a **resizable Multi-Row Liquid Glass Dock (`50%–150%`, `1–3 rows`)**, a **macOS 26–inspired Applications Popup**, rotating **Night Scenes** with **Big Glass Clock or Small Header Clock**, **7 Interactive Home Dashboard Widgets**, **Custom Wallpapers (`Single/Multi, Folder Shuffle & Reddit Wallpapers`)**, a **Built-In Lock Screen / Idle Screensaver**, an **App Icon Changer & Interactive Icon Editor**, **Automatic GitHub App Updates**, a **built-in PC-free CleanYourTV Debloater (On-Demand GitHub Profile Downloader + Manual System App Debloater + Stock Launcher Disabler)**, a **Customizable Glass Control Panel (`Quick Settings`) overlay with Extended Weather**, an **Input Manager (Hide & Rename TV Inputs)**, a **Recent Apps Switcher**, **multi-tap (`1x / 2x / 3x`) Remote Button Remapping with ScanCode Support + Home Button Fix**, a **Universal 3-Mode Volume Button Hold Fix (Standard, HY320 Projector, Onn TV Box)**, **Apple TV UI Sound Effects**, **Caffeine Mode**, and **Dual-Mode Secure Local ADB Setup (with Dynamic Port Discovery)** to any Android TV.
+> Wawid TV — независимый форк. Он не связан с Apple и не является официальным продуктом авторов исходного проекта.
 
----
+## Направление проекта
 
-## ✨ Highlights & Features
+- Русский язык как язык первого запуска.
+- Чистый, цельный интерфейс без региональных и религиозных виджетов.
+- Главный экран с приложениями, избранным и продолжением просмотра.
+- Аккуратные стеклянные поверхности, глубина, мягкие тени и ненавязчивые анимации.
+- Управление исключительно пультом: понятный фокус, предсказуемая навигация и крупные интерактивные области.
+- Сохранение полезных возможностей исходного лаунчера там, где они улучшают повседневное использование ТВ.
 
-- **Default Home Dashboard (7 Interactive & Customizable Widgets)**
-  - When no app is focused, or when hovering over apps or non-app elements without Continue Watching items, displays a horizontally scrollable row of 7 Liquid Glass widget tiles (all enabled by default, with **Hold OK** on any widget to **Move** or **Disable** directly from the Home Screen):
-    - 🕌 **Prayer Times**: Daily schedule (Fajr, Sunrise, Dhuhr, Asr, Maghrib, Isha), live countdown to the next prayer, and 10 calculation methods (Diyanet, MWL, ISNA, Egypt, Makkah, Karachi, Tehran, Jafari, Gulf, France).
-    - ⚽ **Interactive Football Matches**: Upcoming and live fixtures across all leagues and competitions (Champions League, Europa League, Premier League, LaLiga, Serie A, Bundesliga, Ligue 1, Süper Lig, etc.) involving your favorite teams, dual team logos, live in-play scores, and D-Pad Left/Right fixture browsing.
-    - 🎬 **Most Watched (Çok İzlenenler)**: Popular and trending movies and TV series across top streaming platforms powered by JustWatch, synced with your UI language by default with custom multi-country selection.
-    - ⛅ **Weather**: Current temperature, condition, location name, and today's forecast.
-    - 🏏 **Live Cricket Scores**: Real-time international and league cricket match scores and status updates.
-    - 📰 **Live News**: Curated breaking headlines and top news stories.
-    - 🍿 **Top Movies & Series**: Highest-rated trending movies and series recommendations.
-  - Fully available and configurable on both **Night Scenes** and **Classic Appearance**.
+## Совместимость и сборка
 
-- **Dual Appearance Modes (`Night Scenes` & `Classic`) + Multi-Row Dock**
-  - **Night Scenes**: Layered foreground/background depth scenes (*Night*, *Golden Hour*, *Waterline*, *Fog*, *Rainforest Dawn*) or custom wallpapers with a giant glass clock (*iPhone Duo*, *iPhone Rounded*, *Tall Glass*) or an optional **Small Clock** in the top-left header, personalized greeting, date, live weather, and a macOS-inspired dynamically resizing **Liquid Glass Dock (`50%` to `150%`, configurable `1 to 3 rows`)** with supersampled anti-aliased squircle icons, adaptive white/black focus rings, and always-on-top floating app name callouts.
-  - **macOS 26 Applications Popup (`Other Apps`)**: Dedicated frosted-glass Applications modal with a live search bar and a 5-column scrollable grid. Moving apps to *Other Apps* shrinks the main dock cleanly without pulling apps back out.
-  - **Classic Appearance**: Clean app grid with an Apple tvOS–styled centered glass dock, squircle app cards, symmetrical edge spacing, and built-in photography or ambient backdrops.
-  - **Big Clock for Classic Appearance**: Brings the authentic iOS/tvOS-style big glass clock, greeting, date, and top-right weather shortcut to Classic mode by default (disabling the top mini-clock), with configurable **Clock Alignment (`Left / Center / Right`)**.
-  - **Dynamic & Custom Wallpaper Clock Alignment**: Dynamic alignment for default night scenes that adapts per wallpaper, plus independent Left / Center / Right alignment for custom wallpapers.
+Исходный проект рассчитан на Android TV / Google TV и использует нативный Java-код. Минимальную и целевую версии Android, а также требования к SDK смотри в `AndroidManifest.xml` и `build.ps1`.
 
-- **Expanded Custom Wallpaper Engine (`1–60 Min Intervals`)**
-  - **Single & Multi-Wallpaper**: Unlimited wallpaper selection from internal storage or USB drives.
-  - **Folder Shuffle**: Automatically cycles through all wallpapers in any chosen folder.
-  - **Reddit Wallpapers**: Pull high-resolution wallpapers directly from selected subreddits (e.g. `wallpapers`, `EarthPorn`) with customizable auto-change intervals (`1, 2, 3, 5, 10, 15, 20, 25, 30, or 60 minutes`) and an instant "Next Wallpaper" skip action.
+Для сборки в Windows:
 
-- **Universal Continue Watching for All Media Apps**
-  - Supports all installed media apps (YouTube, SmartTube, Netflix, Prime Video, Disney+, Apple TV+, Tivimate, HBO Max, Stremio, Nuvio, etc.) using Android TV `TvContract` EPG / Watch Next content provider, `MediaSessionManager` active session tracking, and notification listeners.
-  - **Dock-Linked Focused App Filtering**: The shelf only displays content for the media app currently focused on the dock.
-  - **Integrated Stremio & Nuvio Dock Popups**: Popups directly above dock tiles with local caching, QR code sign-in, and multi-profile switching (including Nuvio fork linking).
-  - **Direct Deep Links**: Clicking any Continue Watching card launches directly into the exact video/episode.
+1. Установи JDK 17 или новее.
+2. Установи Android SDK с Android 34 и Build Tools 34.0.0.
+3. Укажи `JAVA_HOME` и `ANDROID_HOME` (либо `ANDROID_SDK_ROOT`).
+4. Запусти в PowerShell из корня репозитория:
 
-- **Standalone TV Inputs Overlay Panel & Input Manager (`Settings → Control Panel → Inputs`)**
-  - Instant input switching overlay with glass UI styling, assignable via Button Mapper or accessible from the Control Panel and Home Dock.
-  - **Input Manager**: Hide unused TV/HDMI inputs or assign custom names/labels to any input directly from Settings.
-
-- **Caffeine Mode (`Settings → Advanced`)**
-  - Denies Android's idle mode and prevents Android TV's automatic Ambient Mode / screensaver from turning on, keeping your TV awake during long sessions or presentations.
-
-- **Universal Glass Control Panel (`Quick Settings`) Overlay & Apple TV UI Sounds**
-  - Accessible from the home screen or over **any running app** via Button Mapper with selectable **Blurry** or **Transparent** background modes.
-  - Authentic **Apple TV UI Sound Effects** (*Navigate*, *Click*, *Back*) toggleable directly from the Control Panel.
-  - **Extended Weather Panel**: Bottom weather tile spanning 4 columns showing current and tomorrow's forecast (clicking opens the full 5-day weather view).
-  - Includes tiles for **Wi-Fi**, **Bluetooth**, **RAM / Recent Apps**, **Do Not Disturb**, **Audio / Sound**, **Sleep Timer**, **Ambient Mode**, **Power / Screen Off**, **Inputs**, **Button Mapper**, **Settings**, and **Search**.
-
-- **Recent Apps Switcher Overlay & RAM Cleaner**
-  - Open from any app via a mapped remote button or by tapping the **RAM** tile in the Control Panel.
-  - Displays live memory usage (`RAM used / total`), horizontal app cards, **DPAD UP** to force-stop/dismiss individual apps, and a **Close All** button.
-
-- **Multi-Tap Remote Button Mapper, ScanCode Discrimination & 3-Mode Volume Button Hold Fix**
-  - Crash-safe Accessibility Service that intercepts remote buttons with independent actions for **Single Tap (1x)**, **Double Tap (2x)**, and **Triple Tap (3x)**, plus **Send Key Code**.
-  - **Hardware ScanCode Support**: Distinguishes buttons that share the same Android keyCode (such as Philips TV *Sources* `scanCode 757` and *Settings* `scanCode 641` on keyCode `#602`) while passing gamepad/joystick and keyboard D-Pad hold inputs through untouched.
-  - **Fix Home Button & Instant Boot Priority**: Intercepts Home key presses and immediately brings tvOS Launcher to the foreground right after boot without OEM launcher delay.
-  - **Universal Volume Button Hold Fix**:
-    - **Mode 1 (Standard — Default)**: Smooth volume repeat (`320ms` delay, `85ms` repeat) and instant stopping (`<= 45ms`) on Android 9–14 TVs.
-    - **Mode 2 (HY320 / Projector)**: Binder dump watcher with IR pulse-burst handling tailored for Magcubic HY320 and Android 9–12 projectors.
-    - **Mode 3 (Onn TV Box)**: Optimized repeat speed and instant release handling specifically tuned for Onn Google TV streaming boxes.
-
-- **CleanYourTV (Beta) — Built-In PC-Free Android TV Debloater & Uninstaller Helper (`Settings → Advanced`)**
-  - Downloads the latest **[CleanYourTV](https://github.com/Gathin23/cleanyourtv)** release archive on demand into `Download/cleanyourtv`, extracts TV debloat profiles with a live progress popup, and lets you clean up unneeded model files after selecting your TV to keep storage usage minimal.
-  - **Smart OEM Model Detection & ADB Package Similarity Scanner**: Automatically identifies exact or similar models from hardware properties or scans installed vendor packages.
-  - **One-Tap Stock Launcher Disabler & Manual Debloater**: Disable stock launchers (*Google TV Home / LauncherX, Android TV Home / Leanback, TCL, Philips, Xiaomi, Sony*) with safety confirmations and one-tap restore.
-  - **Safe Uninstall Helper**: Dedicated **Uninstall tvOS Launcher** option in Advanced Settings that offers to restore debloated apps and re-enable OEM launchers, revokes special permissions cleanly, and opens the system uninstall screen.
-
-- **Settings Backup & Restore (`Settings → System / About / Quick & Home`)**
-  - Full backup of launcher preferences, dock order, custom app names, custom icons, button remapping, and scene settings to `Download/tvos-launcher-settings.json`.
-
-- **App Icon Changer & Interactive Icon Editor (`JPG / PNG / ICO`)**
-  - Hold **OK** on any app to pick any `.jpg`, `.jpeg`, `.png`, or Windows `.ico` file from internal storage or USB drives with a built-in 14-color rounded-square **App Icon Editor**.
-
-- **Automatic & Manual GitHub Updates (`Settings → Updates`)**
-  - Downloads updates into `Download/tvOSLauncherUpdates` without re-downloading existing files, installs silently via Local ADB (`pm install -r`) in Persistent ADB Mode or via the system PackageInstaller in Secure Mode, and automatically cleans up the update folder on first launch after updating.
-
-- **Dual-Mode Secure Local ADB Setup with Dynamic Port Detection**
-  - Automatically scans and connects to your TV's active local ADB port (`5555`, `5070`, `adb.tcp.port`, or active listening sockets) using a single persistent RSA keypair.
-  - **Secure Mode (Default & Recommended)**: Grants permissions once and immediately closes network ADB (`adb_enabled = 0`).
-  - **Persistent ADB Mode**: Keeps network ADB open for runtime debloating and silent background auto-updates.
-
-- **16 Supported Languages (Full RTL Support for Hebrew & Arabic)**
-  - Fully localized across **English, Turkish, Azerbaijani (Azərbaycan dili), Swedish, Hindi, Spanish, French, German, Italian, Russian, Portuguese, Arabic, Japanese, Chinese, Korean (한국어), and Hebrew (עברית)** with right-to-left UI mirroring for both Hebrew and Arabic.
-
-- **Multi-User Profiles & Live Weather**
-  - Up to 3 profiles, each with its own app order, hidden apps, and Continue Watching list, plus a free 5-day weather forecast via Open-Meteo, MET Norway, or wttr.in.
-
-- **Ultra-Lightweight & Fast (Android 7.0 – Android 14+)**
-  - Pure Android SDK Java with zero third-party runtime dependencies (~5.7 MB APK, ~30 MB private RAM, 0.0% background CPU).
-
----
-
-- **Dual Appearance Modes (`Night Scenes` & `Classic`) + Custom Wallpapers**
-  - **Night Scenes**: Layered foreground/background depth scenes (*Night*, *Golden Hour*, *Waterline*, *Fog*, *Rainforest Dawn*, plus up to **5 Custom Wallpapers** with configurable **Clock Position: Left / Center / Right**) with a giant glass clock (*iPhone Duo*, *iPhone Rounded*, *Tall Glass*), personalized greeting, date, live weather, and a macOS-inspired dynamically resizing **Liquid Glass Dock (`50%` to `150%`)** with floating app name callouts.
-  - **App Icon Changer & Interactive Icon Editor (`JPG / PNG / ICO`)**:
-    - Hold **OK** on any app in the dock or grid and choose **Change app icon** to pick any `.jpg`, `.jpeg`, `.png`, or Windows `.ico` file from internal storage or USB drives.
-    - Includes a built-in **App Icon Editor** with a live rounded-square preview, **14 background color options** (including auto edge-color sampling), **Zoom In / Out**, and **Left / Right / Up / Down** positioning.
-  - **Custom App Renaming, Other Apps & Hidden Apps Vault**:
-    - Hold **OK** on any app in the dock to **Rename**, **Change app icon**, **Move**, **Move to Other Apps**, **Hide**, view **App Info**, **Uninstall**, or **Reset Layout**.
-    - **Move to Other Apps**: Removes the app from the first dock row while keeping it one click away inside the **Other apps (`...`)** button in the dock (auto-hidden when empty, with multi-row Up/Down navigation when expanded).
-    - **Hidden Apps (`Settings → Apps → Hidden apps`)**: Completely hides the app from both the main dock and Other Apps. Inside **Settings → Apps → Hidden apps**, press **OK** on a hidden app to launch it directly, or **Hold OK** to restore it back to the Home Screen.
-  - **Classic**: Clean 6-column app banner grid with an Apple tvOS–styled centered glass dock, larger squircle app cards, symmetrical edge spacing, smooth row animations, built-in photography, ambient color backdrops, or your own **Custom Wallpaper**, and an optional Top Shelf.
-
-- **Multi-User Profiles & Live Weather**
-  - Up to 3 profiles, each with its own app order, hidden apps, and Continue Watching list.
-  - Free 5-day weather forecast via Open-Meteo, MET Norway, or wttr.in (no API key required).
-
-- **Ultra-Lightweight, Fast & Legacy Android TV Ready (Android 7.0 – Android 14+)**
-  - Pure Android SDK Java — no Gradle, no Kotlin runtime, no AndroidX bloat. Instant zoom-in app launches, hardware-accelerated focus animations, and full compatibility from Android 7.0 / 8.0 up to Android 14 TV firmwares.
-
----
-
-## 📸 Screenshots
-
-### Home Screen, Control Panel & Recent Apps Switcher
-
-| Night Scenes Home & macOS Glass Dock | Glass Control Panel Overlay |
-| :---: | :---: |
-| ![Home Screen](screenshots_en/Home.png) | ![Control Panel](screenshots_en/controlpanel.png) |
-
-| Recent Apps Switcher & RAM Cleaner |
-| :---: |
-| ![Recent Apps Switcher](screenshots_en/Recent%20apps.png) |
-
----
-
-### First-Time Setup Assistant
-
-| 1. Welcome & Language Selection | 2. Profile & Avatar Setup |
-| :---: | :---: |
-| ![Welcome](screenshots_en/Welcome.png) | ![Profile Setup](screenshots_en/User.png) |
-
-| 3. Appearance Mode (`Night Scenes` / `Classic`) | 4. Weather & Location |
-| :---: | :---: |
-| ![Appearance Setup](screenshots_en/Apperance.png) | ![Weather Setup](screenshots_en/Weather.png) |
-
-| 5. Easy Setup (Auto ADB) vs. Manual Permissions | 6. Remote Button Mapper Setup (`1x / 2x / 3x`) |
-| :---: | :---: |
-| ![Complete Setup](screenshots_en/Setup.png) | ![Button Mapper Setup](screenshots_en/buttonmapper.png) |
-
----
-
-### Home Settings
-
-| Appearance & Scenes (`Dock Size 50%–150%`) | Control Panel (`Quick Settings`) |
-| :---: | :---: |
-| ![Settings - Appearance and Scenes](screenshots_en/Setting1.png) | ![Settings - Control Panel](screenshots_en/Setting2.png) |
-
-| Button Mapper (`1x / 2x / 3x Tap` & Home Button Fix) | Advanced, ADB Status & Permission Check (`5 / 5`) |
-| :---: | :---: |
-| ![Settings - Button Mapper](screenshots_en/Setting3.png) | ![Settings - Advanced & ADB](screenshots_en/Setting4.png) |
-
-| CleanYourTV — Disable System Launchers | Automatic & Manual GitHub Updates |
-| :---: | :---: |
-| ![Settings - Disable System Launchers](screenshots_en/Setting5.png) | ![Settings - Updates](screenshots_en/Setting6.png) |
-
----
-
-## 🚀 Quick Start (Build & Install)
-
-### Prerequisites
-- **JDK 17+** (`javac`, `jar`)
-- **Android SDK** with `build-tools;34.0.0` and `platforms;android-34`
-
-### Build on Windows (PowerShell)
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\build.ps1
-# Output APK -> build\tvos-home.apk
+.\build.ps1
 ```
 
-### Build on macOS / Linux
-```sh
-./build.sh
-# Output APK -> build/tvos-home.apk
-```
+Готовый APK появится в `build\tvOS-home.apk`.
 
-### Install via ADB
-```sh
-adb connect <tv-ip>:5555
-adb install -r build/tvos-home.apk
-adb shell am start -n com.techgenius.tvoslauncher/.MainActivity
-```
+## Происхождение и лицензия
 
----
+Wawid TV основан на [techgenius1/tvOS-Launcher](https://github.com/techgenius1/tvOS-Launcher), распространяемом по лицензии Apache License 2.0. Исходные уведомления об авторстве и лицензии сохранены в файлах [LICENSE](LICENSE) и [NOTICE](NOTICE).
 
-## 📚 Documentation
-
-| Document | Description |
-|---|---|
-| **[Getting started](docs/getting-started.md)** | Install SDK tools, build from source, run on an Android TV or emulator |
-| **[Features](docs/features.md)** | Detailed breakdown of launcher features |
-| **[Install and set up](docs/install.md)** | Setting as default home screen, ADB permissions, and troubleshooting |
-| **[Presentation mode](docs/presentation.md)** | Sending images, videos, and web pages from a browser |
-| **[Architecture](docs/architecture.md)** | Code map, zero-dependency build pipeline, and performance design |
-| **[Contributing](CONTRIBUTING.md)** | Workflow, code style, design and performance guidelines |
-
----
-
-## 📋 Requirements
-
-- **Android TV / Google TV 7.0+ (API 24+)**
-
----
-
-## 🙌 Credits & Acknowledgements
-
-Special thanks to the open-source projects that inspired and contributed to **tvOS Launcher**:
-
-- **[Hume Launcher](https://github.com/petrobot-admin/hume-launcher)** by [@petrobot-admin](https://github.com/petrobot-admin) — Foundation for the zero-dependency Android TV Java architecture, Classic home layout, and system integrations.
-- **[Couch TV](https://github.com/Seagey/couch-tv)** by [@Seagey](https://github.com/Seagey) — Design and inspiration for the Night Scenes depth wallpapers, giant glass clock, and glassmorphic Home Settings UI.
-- **[CleanYourTV](https://github.com/Gathin23/cleanyourtv)** by [@Gathin23](https://github.com/Gathin23) — Community-curated Android TV / Google TV debloat profiles (`examples/`) and safety guidelines powering the built-in CleanYourTV (Beta) debloater.
-- **Inter Typeface** (SIL Open Font License 1.1) & **Project Nayuki QR Code Generator** (MIT License).
-- Weather data powered by **Open-Meteo**, **MET Norway**, and **wttr.in**.
-
----
-
-## 📄 License
-
-Licensed under the **Apache License 2.0** — see [LICENSE](LICENSE) and [NOTICE](NOTICE) for details.
+Изменения Wawid Studios не следует приписывать первоначальному автору. Перед распространением сборок необходимо сохранять условия Apache-2.0 и соответствующие уведомления.
