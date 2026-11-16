@@ -1620,7 +1620,7 @@ final class SceneHome {
         String position = Scenes.getDockPosition(host);
         boolean side = Scenes.isSideDockPosition(host);
         if (dockLabel != null) {
-            dockLabel.setVisibility(side ? View.GONE : View.INVISIBLE);
+            dockLabel.setVisibility(side || "top".equals(position) ? View.GONE : View.INVISIBLE);
         }
         FrameLayout.LayoutParams lp = (dockContainer.getLayoutParams() instanceof FrameLayout.LayoutParams)
                 ? (FrameLayout.LayoutParams) dockContainer.getLayoutParams()
@@ -1735,7 +1735,7 @@ final class SceneHome {
 
     private void updateDockTooltip(View tile, String text) {
         if (dockLabel == null) return;
-        if (Scenes.isSideDockPosition(host)) {
+        if (Scenes.isSideDockPosition(host) || "top".equals(Scenes.getDockPosition(host))) {
             dockLabel.setVisibility(View.GONE);
             return;
         }
