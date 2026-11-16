@@ -247,6 +247,26 @@ final class SceneHome {
         lp.leftMargin = dp(40);
         lp.topMargin = dp(78);
         overlay.addView(homeGreeting, lp);
+        applyHomeGreetingLayout();
+    }
+
+    private void applyHomeGreetingLayout() {
+        if (homeGreeting == null) return;
+        String position = Scenes.getHomeGreetingPosition(host);
+        FrameLayout.LayoutParams lp = homeGreeting.getLayoutParams() instanceof FrameLayout.LayoutParams
+                ? (FrameLayout.LayoutParams) homeGreeting.getLayoutParams()
+                : new FrameLayout.LayoutParams(dp(420), dp(28));
+        lp.width = dp(420);
+        lp.height = dp(28);
+        lp.gravity = Gravity.TOP | ("center".equals(position) ? Gravity.CENTER_HORIZONTAL
+                : ("right".equals(position) ? Gravity.RIGHT : Gravity.LEFT));
+        lp.leftMargin = "left".equals(position) ? dp(40) : 0;
+        lp.rightMargin = "right".equals(position) ? dp(40) : 0;
+        lp.topMargin = dp(78);
+        homeGreeting.setLayoutParams(lp);
+        homeGreeting.setGravity("center".equals(position) ? Gravity.CENTER
+                : ("right".equals(position) ? Gravity.RIGHT | Gravity.CENTER_VERTICAL
+                : Gravity.LEFT | Gravity.CENTER_VERTICAL));
     }
 
     void refreshHomeGreeting() {
@@ -266,6 +286,7 @@ final class SceneHome {
         lp.leftMargin = dp(40);
         lp.topMargin = dp(78);
         host.root.addView(homeGreeting, lp);
+        applyHomeGreetingLayout();
     }
 
     private void buildSearchAiBar() {
@@ -2725,7 +2746,14 @@ final class SceneHome {
 
 
     private static final String KEY_ICON_APPEARANCE = "wawid_icon_appearance";
-    static int iconAppearance(Context c) { return Profiles.homePrefs(c).getInt(KEY_ICON_APPEARANCE, 4); }
+    private static String iconAppearanceKey(Context c) {
+        return KEY_ICON_APPEARANCE + "_" + (Scenes.LOOK_CLASSIC.equals(Scenes.getLook(c))
+                ? Scenes.LOOK_CLASSIC : Scenes.LOOK_SCENES);
+    }
+    static int iconAppearance(Context c) {
+        return Profiles.homePrefs(c).getInt(iconAppearanceKey(c),
+                Profiles.homePrefs(c).getInt(KEY_ICON_APPEARANCE, 4));
+    }
     static String iconAppearanceLabel(Context c) {
         switch (iconAppearance(c)) {
             case 1: return "Тёмные";
@@ -2741,7 +2769,7 @@ final class SceneHome {
         return new String[]{"Оригинальные", "Тёмные", "Тонированные", "Светлые", "Градиентные", "Космические"};
     }
     static void setIconAppearance(Context c, int style) {
-        Profiles.homePrefs(c).edit().putInt(KEY_ICON_APPEARANCE, Math.max(0, Math.min(5, style))).apply();
+        Profiles.homePrefs(c).edit().putInt(iconAppearanceKey(c), Math.max(0, Math.min(5, style))).apply();
     }
     static void cycleIconAppearance(Context c) {
         setIconAppearance(c, (iconAppearance(c) + 1) % 6);
