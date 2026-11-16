@@ -236,6 +236,8 @@ final class SceneHome {
         searchAiRow.setGravity(Gravity.CENTER_VERTICAL);
         searchAiRow.setClipChildren(false);
         searchAiRow.setClipToPadding(false);
+        searchAiRow.setElevation(dp(8));
+        searchAiRow.setTranslationZ(dp(8));
         final int controlSize = dp(42);
         systemSearchButton = new ImageView(host);
         systemSearchButton.setScaleType(ImageView.ScaleType.CENTER);
@@ -254,7 +256,7 @@ final class SceneHome {
         GradientDrawable ring = new GradientDrawable();
         ring.setShape(GradientDrawable.OVAL);
         ring.setColor(Color.TRANSPARENT);
-        ring.setStroke(dp(2), Color.WHITE);
+        ring.setStroke(dp(2), 0xFFE0C7FF);
         systemSearchButton.setOnFocusChangeListener((v, has) -> {
             v.setForeground(has ? ring : null);
             v.animate().scaleX(has ? 1.08f : 1f).scaleY(has ? 1.08f : 1f).setDuration(180).setInterpolator(MainActivity.LIFT).start();
@@ -265,7 +267,8 @@ final class SceneHome {
         wawAiInput.setTextSize(13f);
         wawAiInput.setTextColor(0xFFF4F4F6);
         wawAiInput.setHintTextColor(0x99F4F4F6);
-        wawAiInput.setHint("Спросить WawAI…");
+        wawAiInput.setHint("Задать вопрос WawAI…");
+        wawAiInput.setContentDescription("Поле вопроса для WawAI");
         wawAiInput.setImeOptions(EditorInfo.IME_ACTION_SEND);
         wawAiInput.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         wawAiInput.setPadding(dp(16), 0, dp(16), 0);
@@ -407,7 +410,7 @@ final class SceneHome {
         GradientDrawable whoFocusRing = new GradientDrawable();
         whoFocusRing.setCornerRadius(dp(22));
         whoFocusRing.setColor(Color.TRANSPARENT);
-        whoFocusRing.setStroke(dp(2), Color.WHITE);
+        whoFocusRing.setStroke(dp(2), 0xFFE0C7FF);
 
         whoBar.setOnFocusChangeListener((v, has) -> {
             v.setForeground(has ? whoFocusRing : null);
@@ -466,7 +469,7 @@ final class SceneHome {
         GradientDrawable weatherFocusRing = new GradientDrawable();
         weatherFocusRing.setCornerRadius(mSize / 2f);
         weatherFocusRing.setColor(Color.TRANSPARENT);
-        weatherFocusRing.setStroke(dp(2), Color.WHITE);
+        weatherFocusRing.setStroke(dp(2), 0xFFE0C7FF);
 
         weatherBtn.setOnFocusChangeListener((v, has) -> {
             v.setForeground(has ? weatherFocusRing : null);
@@ -520,7 +523,7 @@ final class SceneHome {
         GradientDrawable moonFocusRing = new GradientDrawable();
         moonFocusRing.setCornerRadius(mSize / 2f);
         moonFocusRing.setColor(Color.TRANSPARENT);
-        moonFocusRing.setStroke(dp(2), Color.WHITE);
+        moonFocusRing.setStroke(dp(2), 0xFFE0C7FF);
 
         moonBtn.setOnFocusChangeListener((v, has) -> {
             v.setForeground(has ? moonFocusRing : null);
@@ -1255,7 +1258,7 @@ final class SceneHome {
         GradientDrawable focusRing = new GradientDrawable();
         focusRing.setCornerRadius(r);
         focusRing.setColor(Color.TRANSPARENT);
-        focusRing.setStroke(dp(2), Color.WHITE);
+        focusRing.setStroke(dp(2), 0xFFE0C7FF);
 
         // Left thumbnail (16:9)
         int tw = dp(84), th = dp(48);
