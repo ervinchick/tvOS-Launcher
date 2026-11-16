@@ -242,31 +242,18 @@ final class SceneHome {
         homeGreeting.setEllipsize(TextUtils.TruncateAt.END);
         homeGreeting.setText(Scenes.getHomeGreeting(host));
         homeGreeting.setVisibility(homeGreeting.getText().length() == 0 ? View.GONE : View.VISIBLE);
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-                dp(420), dp(28), Gravity.TOP | Gravity.START);
-        lp.leftMargin = dp(40);
-        lp.topMargin = dp(78);
-        overlay.addView(homeGreeting, lp);
-        applyHomeGreetingLayout();
+        homeGreeting.setGravity(Gravity.CENTER);
     }
 
     private void applyHomeGreetingLayout() {
         if (homeGreeting == null) return;
-        String position = Scenes.getHomeGreetingPosition(host);
-        FrameLayout.LayoutParams lp = homeGreeting.getLayoutParams() instanceof FrameLayout.LayoutParams
-                ? (FrameLayout.LayoutParams) homeGreeting.getLayoutParams()
-                : new FrameLayout.LayoutParams(dp(420), dp(28));
-        lp.width = dp(420);
-        lp.height = dp(28);
-        lp.gravity = Gravity.TOP | ("center".equals(position) ? Gravity.CENTER_HORIZONTAL
-                : ("right".equals(position) ? Gravity.RIGHT : Gravity.LEFT));
-        lp.leftMargin = "left".equals(position) ? dp(40) : 0;
-        lp.rightMargin = "right".equals(position) ? dp(40) : 0;
-        lp.topMargin = dp(78);
-        homeGreeting.setLayoutParams(lp);
-        homeGreeting.setGravity("center".equals(position) ? Gravity.CENTER
-                : ("right".equals(position) ? Gravity.RIGHT | Gravity.CENTER_VERTICAL
-                : Gravity.LEFT | Gravity.CENTER_VERTICAL));
+        homeGreeting.setGravity(Gravity.CENTER);
+        ViewGroup.LayoutParams params = homeGreeting.getLayoutParams();
+        if (params != null) {
+            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            params.height = dp(28);
+            homeGreeting.setLayoutParams(params);
+        }
     }
 
     void refreshHomeGreeting() {
@@ -274,19 +261,6 @@ final class SceneHome {
         String value = Scenes.getHomeGreeting(host);
         homeGreeting.setText(value);
         homeGreeting.setVisibility(value.isEmpty() ? View.GONE : View.VISIBLE);
-    }
-
-    void attachHomeGreetingToRoot() {
-        if (homeGreeting == null || host.root == null || homeGreeting.getParent() == host.root) return;
-        if (homeGreeting.getParent() instanceof ViewGroup) {
-            ((ViewGroup) homeGreeting.getParent()).removeView(homeGreeting);
-        }
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-                dp(420), dp(28), Gravity.TOP | Gravity.START);
-        lp.leftMargin = dp(40);
-        lp.topMargin = dp(78);
-        host.root.addView(homeGreeting, lp);
-        applyHomeGreetingLayout();
     }
 
     private void buildSearchAiBar() {
@@ -1572,6 +1546,14 @@ final class SceneHome {
         dockContainer.setElevation(dp(24));
         dockContainer.setTranslationZ(dp(24));
 
+        if (homeGreeting != null) {
+            LinearLayout.LayoutParams greetingLp = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, dp(28));
+            greetingLp.bottomMargin = dp(7);
+            dockContainer.addView(homeGreeting, greetingLp);
+            applyHomeGreetingLayout();
+        }
+
         int ptrH = dp(5f);
         dockLabel = new TextView(host);
         Ui.textSize(dockLabel, 11.5f);
@@ -2787,6 +2769,23 @@ final class SceneHome {
         return Profiles.homePrefs(c).getInt(iconAppearanceKey(c),
                 Profiles.homePrefs(c).getInt(KEY_ICON_APPEARANCE, 4));
     }
+    private static String cardAppearanceKey(Context c) {
+        return "dock_card_appearance_" + (Scenes.LOOK_CLASSIC.equals(Scenes.getLook(c))
+                ? Scenes.LOOK_CLASSIC : Scenes.LOOK_SCENES);
+    }
+
+    static boolean isGradientCardAppearance(Context c) {
+        return c == null || Profiles.homePrefs(c).getBoolean(cardAppearanceKey(c), true);
+    }
+
+    static void setGradientCardAppearance(Context c, boolean enabled) {
+        if (c != null) Profiles.homePrefs(c).edit().putBoolean(cardAppearanceKey(c), enabled).apply();
+    }
+
+    static String cardAppearanceLabel(Context c) {
+        return isGradientCardAppearance(c) ? "Градиентный" : "Классический";
+    }
+
     static String iconAppearanceLabel(Context c) {
         switch (iconAppearance(c)) {
             case 1: return "Тёмные";
@@ -2810,7 +2809,10 @@ final class SceneHome {
     private Bitmap applyIconAppearance(Bitmap source) {
         if (source == null || source.isRecycled()) return source;
         int style = iconAppearance(host);
-        if (style == 0) return source;
+        if (style == 0 || style == 4) {
+            if (!isGradientCardAppearance(host)) return source;
+            style = 4;
+        }
         int w = source.getWidth(), h = source.getHeight();
         Bitmap out = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         int[] pixels = new int[w * h];
@@ -2862,7 +2864,8 @@ final class SceneHome {
                 return applyIconAppearance(prepared);
             }
         }
-        String cacheKey = (a.key != null ? a.key : a.pkg) + "#appearance-" + iconAppearance(host);
+        String cacheKey = (a.key != null ? a.key : a.pkg) + "#appearance-" + iconAppearance(host)
+                + "-card-" + (isGradientCardAppearance(host) ? "gradient" : "classic");
         if (cacheKey != null && logoCache.containsKey(cacheKey)) {
             return logoCache.get(cacheKey);
         }
