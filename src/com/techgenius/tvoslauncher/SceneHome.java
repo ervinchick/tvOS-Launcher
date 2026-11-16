@@ -278,7 +278,7 @@ final class SceneHome {
         GradientDrawable inputFocusRing = new GradientDrawable();
         inputFocusRing.setCornerRadius(dp(22));
         inputFocusRing.setColor(Color.TRANSPARENT);
-        inputFocusRing.setStroke(dp(2), Color.WHITE);
+        inputFocusRing.setStroke(dp(2), 0xFFE0C7FF);
         wawAiInput.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEND || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP)) {
                 String q = wawAiInput.getText().toString().trim();
@@ -1748,7 +1748,7 @@ final class SceneHome {
         final Paint ringPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         ringPaint.setStyle(Paint.Style.STROKE);
         ringPaint.setStrokeWidth(strokeWidthPx);
-        ringPaint.setColor(useBlackRing ? 0xFF111114 : Color.WHITE);
+        ringPaint.setColor(useBlackRing ? 0xFF111114 : 0xFFE0C7FF);
 
         final RectF ringRect = new RectF();
         return new Drawable() {
