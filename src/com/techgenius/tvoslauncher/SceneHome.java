@@ -1553,6 +1553,36 @@ final class SceneHome {
                 Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
         dlp.bottomMargin = dp(14);
         overlay.addView(dockContainer, dlp);
+        applyDockPosition();
+    }
+
+    private void applyDockPosition() {
+        if (dockContainer == null) return;
+        String position = Scenes.getDockPosition(host);
+        boolean side = Scenes.isSideDockPosition(host);
+        if (dockLabel != null) {
+            dockLabel.setVisibility(side ? View.GONE : View.INVISIBLE);
+        }
+        FrameLayout.LayoutParams lp = (dockContainer.getLayoutParams() instanceof FrameLayout.LayoutParams)
+                ? (FrameLayout.LayoutParams) dockContainer.getLayoutParams()
+                : new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        lp.leftMargin = dp(16);
+        lp.rightMargin = dp(16);
+        lp.topMargin = dp(14);
+        lp.bottomMargin = dp(14);
+        if ("top".equals(position)) {
+            lp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+        } else if ("left".equals(position)) {
+            lp.gravity = Gravity.CENTER_VERTICAL | Gravity.LEFT;
+        } else if ("right".equals(position)) {
+            lp.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
+        } else {
+            lp.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+        }
+        dockContainer.setLayoutParams(lp);
+        dockContainer.requestLayout();
     }
 
     private Drawable createMacTooltipDrawable() {
@@ -1646,6 +1676,10 @@ final class SceneHome {
 
     private void updateDockTooltip(View tile, String text) {
         if (dockLabel == null) return;
+        if (Scenes.isSideDockPosition(host)) {
+            dockLabel.setVisibility(View.GONE);
+            return;
+        }
         if (text == null || text.isEmpty() || tile == null || !Scenes.isDockNamesShown(host)) {
             dockLabel.setVisibility(View.INVISIBLE);
             return;
@@ -1818,12 +1852,15 @@ final class SceneHome {
         int padV = Math.max(dp(6), Math.round(dp(10) * scale));
         dockBox.setPadding(padH, padV, padH, padV);
 
+        boolean sideDock = Scenes.isSideDockPosition(host);
         int maxDockInnerW = Math.max(tileSize * 4, host.screenW - dp(72) - 2 * padH);
         int maxColsFit = Math.max(4, (maxDockInnerW + tileGap) / (tileSize + tileGap));
-        int cols = Math.min(12, maxColsFit);
+        int cols = sideDock ? 1 : Math.min(12, maxColsFit);
         currentDockCols = cols;
         int dockRows = Scenes.getDockRows(host);
-        int totalSlots = cols * dockRows;
+        int sideSlots = Math.max(4, Math.min(9,
+                (host.screenH - dp(112) + tileGap) / Math.max(1, tileSize + tileGap)));
+        int totalSlots = sideDock ? sideSlots : cols * dockRows;
 
         // Collect installed apps for Home and Other Apps
         List<MainActivity.AppEntry> homePool = new ArrayList<>();
@@ -1894,6 +1931,7 @@ final class SceneHome {
         dockBox.requestLayout();
         dockBox.invalidate();
         if (dockContainer != null) {
+            applyDockPosition();
             dockContainer.requestLayout();
             dockContainer.invalidate();
         }
