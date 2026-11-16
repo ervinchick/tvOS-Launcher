@@ -977,41 +977,41 @@ public class SettingsActivity extends Activity {
     void pageLookAndScenes() {
         boolean scenesLook = Scenes.isScenesLook(this);
 
-        section(tr("LOOK", "GÖRÜNÜM"));
+        section("ВНЕШНИЙ ВИД");
         choiceRow(
-                tr("Night scenes", "Gece sahneleri"),
-                tr("A big glass clock, scenes taking turns", "Büyük cam saat, sırayla değişen sahneler"),
+                "Ночные сцены",
+                "Большие стеклянные часы и сменяющиеся фоны",
                 scenesLook,
                 () -> {
                     Scenes.setLook(this, Scenes.LOOK_SCENES);
                     selectSection(LOOK_SCENES, true, 0);
                 });
         choiceRow(
-                tr("Classic", "Klasik"),
-                tr("One photo and a grid of app banners", "Tek fotoğraf ve uygulama afişleri ızgarası"),
+                "Классический",
+                "Обои и сетка приложений",
                 !scenesLook,
                 () -> {
                     Scenes.setLook(this, Scenes.LOOK_CLASSIC);
                     selectSection(LOOK_SCENES, true, 1);
                 });
 
-        section(tr("HOME SCREEN WIDGETS", "ANA EKRAN WIDGET'LARI"));
-        row(tr("Home screen widget settings", "Ana ekran widget ayarları"),
-                () -> (HomeDashboard.isEnabled(this) ? tr("On", "Açık") : tr("Off", "Kapalı")) + "  ›",
+        section("ВИДЖЕТЫ ГЛАВНОГО ЭКРАНА");
+        row("Настройки виджетов",
+                () -> (HomeDashboard.isEnabled(this) ? "Включено" : "Выключено") + "  ›",
                 () -> openSubMenu("home_dashboard"));
 
-        section(tr("DOCK", "DOCK"));
-        row(tr("Dock size", "Dock boyutu"),
+        section("ПАНЕЛЬ ПРИЛОЖЕНИЙ");
+        row("Размер панели",
                 () -> Scenes.dockScaleLabel(this),
                 () -> openSubMenu("dock_size"));
-        row(tr("Dock rows", "Dock satır sayısı"),
+        row("Количество рядов",
                 () -> Scenes.dockRowsLabel(this),
                 () -> {
                     Scenes.cycleDockRows(this);
                     refreshAll();
                 });
-        row(tr("Show app names", "Uygulama adlarını göster"),
-                () -> Scenes.isDockNamesShown(this) ? tr("On", "Açık") : tr("Off", "Kapalı"),
+        row("Названия приложений",
+                () -> Scenes.isDockNamesShown(this) ? "Включено" : "Выключено",
                 () -> {
                     Scenes.setDockNamesShown(this, !Scenes.isDockNamesShown(this));
                     refreshAll();
@@ -1024,20 +1024,20 @@ public class SettingsActivity extends Activity {
                 });
 
         if (scenesLook) {
-            section(tr("NIGHT SCENES CLOCK", "GECE SAHNELERİ SAATİ"));
-            row(tr("Small clock", "Küçük saat"),
-                    () -> Scenes.isSmallClockEnabled(this) ? tr("On", "Açık") : tr("Off", "Kapalı"),
+            section("ЧАСЫ НОЧНЫХ СЦЕН");
+            row("Компактные часы",
+                    () -> Scenes.isSmallClockEnabled(this) ? "Включено" : "Выключено",
                     () -> {
                         Scenes.setSmallClockEnabled(this, !Scenes.isSmallClockEnabled(this));
                         refreshAll();
                     });
-            row(tr("Clock", "Saat"),
-                    () -> Scenes.isClock24h(this) ? tr("24 hour", "24 saat") : tr("12 hour", "12 saat"),
+            row("Формат времени",
+                    () -> Scenes.isClock24h(this) ? "24 часа" : "12 часов",
                     () -> {
                         Scenes.setClock24h(this, !Scenes.isClock24h(this));
                         refreshAll();
                     });
-            row(tr("Clock font", "Saat yazı tipi"),
+            row("Шрифт часов",
                     () -> Scenes.clockStyleLabel(this),
                     () -> {
                         Scenes.cycleClockStyle(this);
@@ -1068,7 +1068,7 @@ public class SettingsActivity extends Activity {
             section(tr("CUSTOM WALLPAPER", "ÖZEL DUVAR KAĞIDI"));
             row(tr("Custom wallpaper mode", "Özel duvar kağıdı modu"),
                     () -> CustomMedia.isCustomWallpaperEnabled(this, CustomMedia.SCOPE_SCENE)
-                            ? tr("On", "Açık") : tr("Off", "Kapalı"),
+                            ? "Включено" : "Выключено",
                     () -> {
                         boolean next = !CustomMedia.isCustomWallpaperEnabled(this, CustomMedia.SCOPE_SCENE);
                         CustomMedia.setCustomWallpaperEnabled(this, CustomMedia.SCOPE_SCENE, next);
@@ -1093,7 +1093,7 @@ public class SettingsActivity extends Activity {
             section(tr("CLASSIC CLOCK & WEATHER", "KLASİK SAAT VE HAVA DURUMU"));
             boolean bigClock = Scenes.isClassicBigClockEnabled(this);
             row(tr("Big Clock (Night Scene style)", "Büyük Saat (Gece Sahnesi stili)"),
-                    () -> bigClock ? tr("On", "Açık") : tr("Off", "Kapalı"),
+                    () -> bigClock ? "Включено" : "Выключено",
                     () -> {
                         Scenes.setClassicBigClockEnabled(this, !Scenes.isClassicBigClockEnabled(this));
                         rebuildMainRows();
@@ -1105,27 +1105,27 @@ public class SettingsActivity extends Activity {
                             Scenes.cycleClassicClockPos(this);
                             refreshAll();
                         });
-                row(tr("Clock", "Saat"),
-                        () -> Scenes.isClock24h(this) ? tr("24 hour", "24 saat") : tr("12 hour", "12 saat"),
+                row("Формат времени",
+                        () -> Scenes.isClock24h(this) ? "24 часа" : "12 часов",
                         () -> {
                             Scenes.setClock24h(this, !Scenes.isClock24h(this));
                             refreshAll();
                         });
-                row(tr("Clock font", "Saat yazı tipi"),
+                row("Шрифт часов",
                         () -> Scenes.clockStyleLabel(this),
                         () -> {
                             Scenes.cycleClockStyle(this);
                             refreshAll();
                         });
                 row(tr("Top-right weather shortcut", "Sağ üst hava durumu kısayolu"),
-                        () -> SceneHome.isWeatherShortcutEnabled(this) ? tr("On", "Açık") : tr("Off", "Kapalı"),
+                        () -> SceneHome.isWeatherShortcutEnabled(this) ? "Включено" : "Выключено",
                         () -> {
                             SceneHome.setWeatherShortcutEnabled(this, !SceneHome.isWeatherShortcutEnabled(this));
                             refreshAll();
                         });
             } else {
-                row(tr("Clock", "Saat"),
-                        () -> Scenes.isClock24h(this) ? tr("24 hour", "24 saat") : tr("12 hour", "12 saat"),
+                row("Формат времени",
+                        () -> Scenes.isClock24h(this) ? "24 часа" : "12 часов",
                         () -> {
                             Scenes.setClock24h(this, !Scenes.isClock24h(this));
                             refreshAll();
@@ -1136,7 +1136,7 @@ public class SettingsActivity extends Activity {
             boolean customClassicOn = CustomMedia.isCustomWallpaperEnabled(this, CustomMedia.SCOPE_CLASSIC);
             row(tr("Custom wallpaper mode", "Özel duvar kağıdı modu"),
                     () -> CustomMedia.isCustomWallpaperEnabled(this, CustomMedia.SCOPE_CLASSIC)
-                            ? tr("On", "Açık") : tr("Off", "Kapalı"),
+                            ? "Включено" : "Выключено",
                     () -> {
                         boolean next = !CustomMedia.isCustomWallpaperEnabled(this, CustomMedia.SCOPE_CLASSIC);
                         CustomMedia.setCustomWallpaperEnabled(this, CustomMedia.SCOPE_CLASSIC, next);
